@@ -19,12 +19,12 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const existingUsername = await User.findOne({ username })
-    if (!existingUsername) {
+    if (existingUsername) {
         new apiError(407, "This username is already taken by someone!")
     }
 
     const user = await User.create({
-        fullname,
+        fullName,
         username,
         email,
         password,

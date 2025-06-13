@@ -1,10 +1,16 @@
 import express from 'express'
-import { loginUser, logoutUser, registerUser } from '../controllers/user.controller.js'
+import { registerUser, loginUser, logoutUser } from '../controllers/user.controller.js'
 import { verifyJwt } from '../middlewares/auth.middleware.js'
 import { upload } from '../middlewares/multer.middleware.js'
 
 
 const router = express.Router()
+
+console.log('upload:', upload)
+console.log('typeof upload.fields:', typeof upload.fields)
+
+console.log('registerUser:', registerUser)
+console.log('typeof registerUser:', typeof registerUser)
 
 
 router.route("/register").post(
@@ -17,8 +23,7 @@ router.route("/register").post(
             name: 'coverImage',
             maxCount: 1
         }
-    ]), registerUser
-)
+    ]), registerUser)
 
 router.route("/login").post(loginUser)
 router.route("/logout").get(verifyJwt, logoutUser)

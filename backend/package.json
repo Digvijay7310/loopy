@@ -13,6 +13,7 @@
   "description": "Loopy a Video sharing platform for all user this website is now in development stage so all video you upload will be seen by admin ",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.6.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
