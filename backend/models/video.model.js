@@ -27,17 +27,17 @@ const videoSchema = new mongoose.Schema({
     },
     isPublish: {
         type: String,
-        default: ["public"],
+        default: "public",
     },
     comments: [
         {
-            type: Schema.types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
         },
     ],
     likes: [
         {
-            type: Schema.types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User"
         }
     ]

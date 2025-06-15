@@ -6,11 +6,11 @@ import { upload } from '../middlewares/multer.middleware.js'
 
 const router = express.Router()
 
-console.log('upload:', upload)
-console.log('typeof upload.fields:', typeof upload.fields)
+// console.log('upload:', upload)
+// console.log('typeof upload.fields:', typeof upload.fields)
 
-console.log('registerUser:', registerUser)
-console.log('typeof registerUser:', typeof registerUser)
+// console.log('registerUser:', registerUser)
+// console.log('typeof registerUser:', typeof registerUser)
 
 
 router.route("/register").post(

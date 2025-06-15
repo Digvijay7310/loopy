@@ -31,6 +31,7 @@ const userSchema = new Schema({
     },
     coverImage: {
         type: String,
+        required: true,
     },
     watchHistory: {
         type: Schema.Types.ObjectId,
@@ -56,7 +57,7 @@ userSchema.methods.generateAccessToken = function () {
     },
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expires: process.env.ACCESS_TOKEN_EXPIRY
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
         }
     )
 }
@@ -70,7 +71,7 @@ userSchema.methods.generateRefreshToken = function () {
     },
         process.env.REFRESH_TOKEN_SECRET,
         {
-            expires: process.env.REFRESH_TOKEN_EXPIRY
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
         }
     )
 }
