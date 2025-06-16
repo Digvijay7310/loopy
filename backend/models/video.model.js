@@ -20,6 +20,7 @@ const videoSchema = new mongoose.Schema({
     },
     owner: {
         type: Schema.Types.ObjectId,
+        required: true,
     },
     views: {
         type: Number,
