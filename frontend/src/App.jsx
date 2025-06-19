@@ -13,6 +13,8 @@ import Profile from "./Pages/Profile";
 import Video from "./Pages/Video";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
+import Footer from "./components/Footer";
+import Layout from "./Layout/Layout";
 
 function App() {
   return (
@@ -20,17 +22,19 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navbar />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/my-comments" element={<Comments />} />
-            <Route path="/my-likes" element={<Likes />} />
-            <Route path="/video-upload" element={<VideoUpload />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/my-video" element={<Video />} />
-            <Route path="/my-profile" element={<Profile />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="register" element={<Register />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="login" element={<Login />} />
+              <Route path="logout" element={<Logout />} />
+              <Route path="my-comments" element={<Comments />} />
+              <Route path="my-likes" element={<Likes />} />
+              <Route path="video-upload" element={<VideoUpload />} />
+              <Route path="about" element={<About />} />
+              <Route path="my-video" element={<Video />} />
+              <Route path="my-profile" element={<Profile />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </AuthProvider>

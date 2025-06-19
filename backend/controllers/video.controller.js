@@ -12,7 +12,7 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
     try {
         //Upload Video by taking title, desciption, videoUrl, thumbnail
         const { title, description } = req.body
-        const videoUrl = req.files?.video?.[0]?.path
+        const videoUrl = req.files?.videoUrl?.[0]?.path
         const thumbnail = req.files?.thumbnail?.[0]?.path
 
         //Check any field is empty or not
@@ -21,8 +21,8 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
         }
 
         //Upload video thumbnail and video on cloudinary ang get url
-        const videoUpload = await uploadOnCloudinary(localVideoPath)
-        const thumbnailUpload = await uploadOnCloudinary(localThumbnailPath)
+        const videoUpload = await uploadOnCloudinary(videoUrl)
+        const thumbnailUpload = await uploadOnCloudinary(thumbnail)
 
         if (!videoUpload || !thumbnailUpload) {
             return next(new apiError(500, "Cloudinary upload failed"))
@@ -82,7 +82,7 @@ const myVideos = asyncHandler(async (req, res, next) => {
 })
 
 const watchVideo = asyncHandler(async (req, res, next) => {
-    const videoId = req.params;
+    const { videoId } = req.params;
     const userId = req.user
 
     if (!videoId) {
@@ -90,7 +90,7 @@ const watchVideo = asyncHandler(async (req, res, next) => {
     }
 
     //find video by id 
-    const video = await Video.findById({ videoId }).populate("owner", "username avatar")
+    const video = await Video.findById(videoId).populate("owner", "username avatar")
     if (!video) {
         return next(new apiError(404, "Video not found"))
     }
@@ -184,9 +184,11 @@ const videoDelete = asyncHandler(async (req, res, next) => {
             return res.status(404)
                 .json(new apiResponse(404, null, "Video not found"))
         }
+        console.log("video owner: ", video.owner.toString())
+        console.log("req user: ", req.user._id.toString())
 
-        if (video.owner.toString() !== req.user) {
-            return next(new apiError(403, "You are not authorize4d to delete this video"))
+        if (video.owner.toString() !== req.user._id.toString()) {
+            return next(new apiError(403, "You are not authorized to delete this video"))
         }
         //delete video
         const deleteResult = await video.deleteOne()

@@ -3,6 +3,7 @@ import { Video } from "../models/video.model.js";
 import apiError from "../utils/ApiError.js";
 import apiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/AsyncHandler.js";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -10,8 +11,11 @@ const registerUser = asyncHandler(async (req, res, next) => {
         const { fullName, username, email, password } = req.body
         const { avatar, coverImage } = req.files
 
-        console.log("req files ", req.files)
-        console.log("req body ", req.body)
+        // console.log("req files ", req.files)
+        // console.log("req body ", req.body)
+
+        const avatarPath = avatar?.[0]?.path;
+        const coverImagePath = coverImage?.[0]?.path
 
         /*
         validate required fields
@@ -25,16 +29,9 @@ const registerUser = asyncHandler(async (req, res, next) => {
         }
             */
 
-        if (!fullName) {
-            console.log("fullName", fullName)
+        if (!fullName || !username || !email || !password || !avatarPath || !coverImagePath) {
+            return next(new apiError(400, "All fields fullName, username, email, password, avatar, coverImage must be required"))
         }
-        if (!username) {
-            console.log("username", username)
-        }
-        if (!email) { console.log("email", email) }
-        if (!password) { console.log("password", password) }
-        if (!req.files?.avatar?.[0]) { console.log("avatar", req.files?.avatar[0]) }
-        if (!req.files?.coverImage[0]) { console.log("coverImage", req.files?.coverImage[0]) }
 
         //Check user email is existing or not
 
@@ -50,6 +47,14 @@ const registerUser = asyncHandler(async (req, res, next) => {
             return next(new apiError(407, "This username is already taken by someone!"))
         }
 
+        // cover image and avatar upload on cloudinary
+        const avatarUpload = await uploadOnCloudinary(avatarPath)
+        const coverImageupload = await uploadOnCloudinary(coverImagePath)
+
+        if (!avatarUpload || !coverImageupload) {
+            return next(new apiError(500, "Cloudinary upload failed"))
+        }
+
         //Create new user
 
         const user = await User.create({
@@ -57,8 +62,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
             username,
             email,
             password,
-            avatar: req.files?.avatar?.[0].path,
-            coverImage: req.files?.coverImage?.[0].path
+            avatar: avatarUpload.secure_url,
+            coverImage: coverImageupload.secure_url
         })
 
         //Genereate accessToken and refreshToken
@@ -76,7 +81,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
         res.cookie("refreshToken", refreshToken, cookieOption)
 
 
-        console.log(user.fullName, user.username, user.email, user.password, user.avatar, user.coverImage)
+        // console.log(user.fullName, user.username, user.email, user.password, user.avatarUpload, user.coverImageupload)
         return res.status(201)
             .json(new apiResponse(201, "User registed successfully", { user, accessToken, refreshToken }))
     } catch (error) {
