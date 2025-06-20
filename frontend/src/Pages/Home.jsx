@@ -1,43 +1,57 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
+function VideoCard() {
+  return (
+    <div className="cursor-pointer flex flex-col rounded-xl p-2 bg-gray-900 hover:shadow-lg transition-shadow duration-300">
+      <div className=" rounded-2xl overflow-hidden">
+        <img
+          src="https://up.yimg.com/ib/th?id=OIP.TcVLBkYGTO7F-M2i2N31EgHaEK&pid=Api&rs=1&c=1&qlt=95&w=203&h=114"
+          alt="Video thumbnail"
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <p className="text-white text-sm font-semibold mt-2 line-clamp-2">
+        This video is made for design purpose only made by Digvijay Kumar, first
+        creator of Loopy
+      </p>
+      <p className="text-gray-400 text-xs mt-1">500 views</p>
+
+      <div className="flex items-center gap-3 mt-3">
+        <img
+          src="https://icon-library.com/images/user-png-icon/user-png-icon-16.jpg"
+          alt="Channel profile"
+          className="h-8 w-8 rounded-full border-2 border-red-600"
+        />
+        <div>
+          <Link to="/" className="text-gray-200 text-sm font-medium">
+            Digvijay Kumar
+          </Link>
+          <p className="text-gray-500 text-xs">20 June 2025</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Home() {
-  const videoCards = new Array(8).fill(null); // Simulate multiple cards
+  const videoCards = new Array(12).fill(null); // 12 sample cards
 
   return (
-    <div className="bg-gray-700 min-h-screen py-8 px-4">
-      <div className="flex flex-wrap justify-start gap-6">
-        {videoCards.map((_, index) => (
-          <div
-            key={index}
-            className="bg-gray-900 w-full sm:w-[48%] md:w-[31%] lg:w-[23%] rounded-md shadow-md overflow-hidden"
-          >
-            {/* Thumbnail */}
-            <div className="w-full h-[170px] bg-gray-800">
-              <img
-                src="https://i.ytimg.com/vi/omNHraNRaKs/maxresdefault.jpg"
-                alt="Video Thumbnail"
-                className="h-full w-full object-cover"
-              />
-            </div>
-
-            {/* Details */}
-            <div className="p-3 text-white">
-              <p className="text-sm font-semibold mb-1 line-clamp-2">
-                This is a new video sharing platform for Loopy
-              </p>
-              <p className="text-xs text-gray-400 mb-3">Views: 5000</p>
-
-              {/* Author Info */}
-              <div className="flex items-center gap-3">
-                <img
-                  src="https://tse4.mm.bing.net/th?id=OIP.AlIScK6urTegkZ178dAAGgHaHa&pid=Api&P=0&h=220"
-                  alt="avatar"
-                  className="w-9 h-9 rounded-full object-cover"
-                />
-                <p className="text-sm">Digvijay Kumar</p>
-              </div>
-            </div>
-          </div>
+    <div className="bg-gray-800 min-h-screen p-4">
+      <div
+        className="
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+          gap-6
+        "
+      >
+        {videoCards.map((_, idx) => (
+          <VideoCard key={idx} />
         ))}
       </div>
     </div>

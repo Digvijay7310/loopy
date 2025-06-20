@@ -36,7 +36,7 @@ function Navbar() {
   );
 
   return (
-    <div className="bg-gray-900 px-4 py-5">
+    <div className="bg-gray-900 px-4 py-5 ">
       <nav className="flex items-center justify-between px-4 gap-4">
         {/* Logo */}
         <div className="text-gray-200 text-xl md:text-2xl lg:text-3xl">

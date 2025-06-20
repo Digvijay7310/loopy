@@ -17,17 +17,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
         const avatarPath = avatar?.[0]?.path;
         const coverImagePath = coverImage?.[0]?.path
 
-        /*
-        validate required fields
-        if (!fullName
-            || !username
-            || !email
-            || !password
-            || !req.files?.avatar?.[0]
-            || !req.files?.coverImage?.[0]) {
-            return next(new apiError(400, "All fields are required"))
-        }
-            */
 
         if (!fullName || !username || !email || !password || !avatarPath || !coverImagePath) {
             return next(new apiError(400, "All fields fullName, username, email, password, avatar, coverImage must be required"))

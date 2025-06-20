@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function About() {
   return (
-    <div className="bg-gray-700 min-h-screen text-white px-4 py-10">
+    <div className="bg-gray-800 min-h-screen text-white px-4 py-10">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl sm:text-5xl font-bold mb-4">
           <Link to="/" className="hover:text-green-400 transition-colors">
@@ -15,7 +15,7 @@ function About() {
         <form
           id="solutions"
           name="solutions"
-          className="bg-gray-600 py-3 px-5 rounded-2xl flex flex-col"
+          className="bg-gray-800 py-3 px-5 rounded-2xl flex flex-col"
         >
           <h3 className="text-xl font-bold mb-4">
             {" "}
