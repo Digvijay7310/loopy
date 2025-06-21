@@ -1,5 +1,5 @@
 import express from 'express'
-import { registerUser, loginUser, logoutUser, getUserProfile, updateUserProfile } from '../controllers/user.controller.js'
+import { registerUser, loginUser, logoutUser, getUserProfile, updateUserProfile, refreshToken } from '../controllers/user.controller.js'
 import { verifyJwt } from '../middlewares/auth.middleware.js'
 import { upload } from '../middlewares/multer.middleware.js'
 
@@ -24,6 +24,7 @@ router.route("/register").post(
             maxCount: 1
         }
     ]), registerUser)
+router.route("/refresh-token").post(refreshToken)
 
 router.route("/login").post(loginUser)
 router.route("/profile").get(verifyJwt, getUserProfile)

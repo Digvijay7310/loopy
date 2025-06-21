@@ -13,8 +13,8 @@ axiosInstance.interceptors.response.use(
         if (error.response?.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                const res = await axiosInstance.get("/auth/refresh-token")
-                axiosInstance.defaults.headers["Authrization"] = `Bearer ${res.data.data.accessToken}`
+                const res = await axiosInstance.post("/refresh-token")
+                axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${res.data.data.accessToken}`
                 return axiosInstance(originalRequest)
             } catch (refreshError) {
                 return Promise.reject(refreshError)

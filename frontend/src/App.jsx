@@ -15,6 +15,8 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import Footer from "./components/Footer";
 import Layout from "./Layout/Layout";
+import UpdateProfile from "./Pages/UpdateProfile";
+import Loading from "./components/Loading";
 
 function App() {
   return (
@@ -22,7 +24,8 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Loading />} />
+            <Route path="/api/v1/users" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="register" element={<Register />} />
               <Route path="dashboard" element={<Dashboard />} />
@@ -33,7 +36,8 @@ function App() {
               <Route path="video-upload" element={<VideoUpload />} />
               <Route path="about" element={<About />} />
               <Route path="my-video" element={<Video />} />
-              <Route path="my-profile" element={<Profile />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="update-profile" element={<UpdateProfile />} />
             </Route>
           </Routes>
         </BrowserRouter>

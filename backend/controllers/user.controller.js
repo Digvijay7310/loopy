@@ -4,7 +4,28 @@ import apiError from "../utils/ApiError.js";
 import apiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/AsyncHandler.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import jwt from "jsonwebtoken"
 
+
+const refreshToken = asyncHandler(async (req, res) => {
+    const refreshToken = req.cookies?.refreshToken || req.body.refreshToken;
+
+    if (!refreshToken) {
+        return res.status(401).json({ message: "No refresh token provided" });
+    }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid refresh token" });
+
+        const accessToken = jwt.sign(
+            { id: user.id, username: user.username, email: user.email },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY } // or whatever expiration you prefer
+        );
+
+        res.json({ accessToken });
+    });
+})
 
 const registerUser = asyncHandler(async (req, res, next) => {
     try {
@@ -172,4 +193,4 @@ const logoutUser = asyncHandler(async (req, res) => {
 })
 
 
-export { registerUser, loginUser, logoutUser, getUserProfile, updateUserProfile }
+export { refreshToken, registerUser, loginUser, logoutUser, getUserProfile, updateUserProfile }

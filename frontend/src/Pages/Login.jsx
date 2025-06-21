@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "../axios.js";
+import axiosInstance from "../axios.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
@@ -20,39 +20,41 @@ function Login() {
     setError("");
     setLoading(true);
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         "/login",
-        {
-          form,
-        },
+
+        form,
+
         { withCredentials: true }
       );
-      setAuthUser(res.data.data.user);
-      setAccessToken(res.data.data.accessToken);
-      axios.defaults.headers.common[
+      console.log(res.data);
+      setAuthUser(res.data.message.user);
+      setAccessToken(res.data.message.accessToken);
+      axiosInstance.defaults.headers.common[
         "Authorization"
-      ] = `Bearer ${res.data.data.accessToken}`;
+      ] = `Bearer ${res.data.message.accessToken}`;
+      console.log("Login successfull", res.data);
       alert("login Successfull");
-      navigate("/");
+      navigate("/api/v1/users/profile");
     } catch (error) {
       setError(
         "Login failed, please try again later",
-        error?.res?.data?.message
+        error?.response?.data?.message
       );
     } finally {
       setLoading(false);
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center flex-col bg-gradient-to-r from-indigo-100 to-blue-100">
-      <h3 className="text-4xl">Loopy</h3>
+    <div className="min-h-screen flex items-center justify-center flex-col bg-gradient-to-l from-gray-600 to-gray-700">
+      <h3 className="text-4xl text-white">Loopy</h3>
 
       <form
         id="loginForm"
         onSubmit={handleLogin}
-        className="bg-white  p-8 rounded-xl shadow-xl w-full max-w-md"
+        className="bg-gray-700  p-8 rounded-xl shadow-xl w-full max-w-md"
       >
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
+        <h1 className="text-3xl font-bold text-center text-green-600 mb-6">
           Welcome back
         </h1>
         {error && (
@@ -62,7 +64,7 @@ function Login() {
         )}
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-xl font-semibold mb-2"
+            className="block text-white text-xl font-semibold mb-2"
             htmlFor="email"
             name="email"
           >
@@ -76,14 +78,14 @@ function Login() {
             onChange={handleOnChange}
             placeholder="Enter Email Address"
             required
-            className="w-full px-4 py-2 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full text-white px-4 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
           />
           <br />
           <br />
           <label
             htmlFor="password"
             name="password"
-            className="block text-gray-700 text-xl font-semibold mb-2"
+            className="block text-white text-xl font-semibold mb-2"
           >
             Password:
           </label>
@@ -95,13 +97,13 @@ function Login() {
               type={showPassword ? "text" : "password"}
               onChange={handleOnChange}
               placeholder="Enter Password"
-              className="w-full px-4 py-2 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full text-white px-4 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="mt-2 text-blue-600"
+            className="mt-2 text-green-600"
           >
             {showPassword ? "Hide" : "Show"}
           </button>
@@ -111,8 +113,8 @@ function Login() {
           disabled={loading}
           className={`w-full py-2 rounded-lg font-semibold cursor-pointer transition duration-200 ${
             loading
-              ? "bg-blue-300 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600 text-white"
+              ? "bg-green-300 cursor-not-allowed"
+              : "bg-green-500 hover:bg-green-600 text-white"
           }`}
         >
           {loading ? "Logging in..." : "Login"}
