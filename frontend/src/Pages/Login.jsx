@@ -33,7 +33,9 @@ function Login() {
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${res.data.message.accessToken}`;
+
       console.log("Login successfull", res.data);
+
       alert("login Successfull");
       navigate("/api/v1/users/profile");
     } catch (error) {
@@ -46,15 +48,13 @@ function Login() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center flex-col bg-gradient-to-l from-gray-600 to-gray-700">
-      <h3 className="text-4xl text-white">Loopy</h3>
-
+    <div className="min-h-screen flex flex-col items-center bg-zinc-800">
       <form
         id="loginForm"
         onSubmit={handleLogin}
-        className="bg-gray-700  p-8 rounded-xl shadow-xl w-full max-w-md"
+        className="bg-zinc-800  p-8 rounded-xl shadow-xl w-full max-w-md"
       >
-        <h1 className="text-3xl font-bold text-center text-green-600 mb-6">
+        <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
           Welcome back
         </h1>
         {error && (
@@ -78,7 +78,7 @@ function Login() {
             onChange={handleOnChange}
             placeholder="Enter Email Address"
             required
-            className="w-full text-white px-4 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full text-white px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
           />
           <br />
           <br />
@@ -97,13 +97,13 @@ function Login() {
               type={showPassword ? "text" : "password"}
               onChange={handleOnChange}
               placeholder="Enter Password"
-              className="w-full text-white px-4 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full text-white px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
             />
           </div>
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="mt-2 text-green-600"
+            className="mt-2 text-red-600"
           >
             {showPassword ? "Hide" : "Show"}
           </button>
@@ -113,16 +113,16 @@ function Login() {
           disabled={loading}
           className={`w-full py-2 rounded-lg font-semibold cursor-pointer transition duration-200 ${
             loading
-              ? "bg-green-300 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600 text-white"
+              ? "bg-red-400 cursor-not-allowed"
+              : "bg-red-600 hover:bg-red-500 text-white"
           }`}
         >
           {loading ? "Logging in..." : "Login"}
         </button>
         <br />
-        <p className="text-blue-500 text-sm text-center">
-          Don't have an account{" "}
-          <Link className="text-red-600" to="/register">
+        <p className="text-white text-sm text-center">
+          Don't have an account ?{" "}
+          <Link className="text-red-600" to="/api/v1/users/register">
             Register
           </Link>{" "}
         </p>

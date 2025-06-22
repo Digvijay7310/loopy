@@ -3,11 +3,11 @@ import { SlLike } from "react-icons/sl";
 import { LiaCommentsSolid } from "react-icons/lia";
 import { Link } from "react-router-dom";
 
-function Likes() {
-  const LikesVideo = new Array(4).fill(null);
+function MyVideos() {
+  const myVideos = new Array(4).fill(null);
   return (
-    <div className="bg-zinc-900 min-h-screen flex flex-col pt-4 ">
-      {LikesVideo.map((_, idx) => {
+    <div className="bg-zinc-800 min-h-screen flex flex-col pt-4 ">
+      {myVideos.map((_, idx) => {
         return (
           <div
             key={idx}
@@ -30,13 +30,16 @@ function Likes() {
 
                 <LiaCommentsSolid className="text-gray-100" />
               </div>
-              <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center gap-3 mt-1">
                 <img
                   src="https://icon-library.com/images/user-png-icon/user-png-icon-16.jpg"
                   alt="User profile"
                   className="h-7 w-7 rounded-full"
                 />
                 <div className="flex flex-col">
+                  <p className="text-gray-400 text-[8px] md:text-xs">
+                    Views: 500
+                  </p>
                   <Link className="text-white text-xs sm:sm md:lg font-semibold">
                     Digvijay Kumar
                   </Link>
@@ -51,4 +54,4 @@ function Likes() {
   );
 }
 
-export default Likes;
+export default MyVideos;

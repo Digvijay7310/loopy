@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function VideoCard() {
   return (
-    <div className="cursor-pointer flex flex-col rounded-xl p-2 bg-gray-900 hover:shadow-lg transition-shadow duration-300">
+    <div className="cursor-pointer flex flex-col rounded-xl p-2 bg-zinc-950 hover:shadow-lg transition-shadow duration-300">
       <div className=" rounded-2xl overflow-hidden">
         <img
           src="https://up.yimg.com/ib/th?id=OIP.TcVLBkYGTO7F-M2i2N31EgHaEK&pid=Api&rs=1&c=1&qlt=95&w=203&h=114"
@@ -38,7 +38,7 @@ function Home() {
   const videoCards = new Array(12).fill(null); // 12 sample cards
 
   return (
-    <div className="bg-gray-800 min-h-screen p-4">
+    <div className="bg-zinc-900 min-h-screen p-4">
       <div
         className="
           grid

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { RiSearchLine, RiVideoUploadLine } from "react-icons/ri";
-import { IoHomeOutline } from "react-icons/io5";
+import { IoHomeOutline, IoLogOut } from "react-icons/io5";
 import { SlLike } from "react-icons/sl";
 import { LiaCommentsSolid } from "react-icons/lia";
-import { LuUserRound } from "react-icons/lu";
-import { MdOutlineDashboard } from "react-icons/md";
+import { LuLogOut, LuOmega, LuUserRound } from "react-icons/lu";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 
@@ -14,30 +13,39 @@ function Navbar() {
 
   const navLinks = (
     <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4 text-sm">
-      <NavLinkItem to="/" label="Home" icon={<IoHomeOutline />} />
+      <NavLinkItem to="/api/v1/users" label="Home" icon={<IoHomeOutline />} />
+
       <NavLinkItem
-        to="/dashboard"
-        label="Dashboard"
-        icon={<MdOutlineDashboard />}
-      />
-      <NavLinkItem
-        to="/video-upload"
+        to="api/v1/videos/video-upload"
         label="Upload"
         icon={<RiVideoUploadLine />}
       />
-      <NavLinkItem to="/my-likes" label="Likes" icon={<SlLike />} />
+      <NavLinkItem
+        to="/api/v1/users/my-likes"
+        label="Likes"
+        icon={<SlLike />}
+      />
       <NavLinkItem
         to="/my-comments"
         label="Comments"
         icon={<LiaCommentsSolid />}
       />
-      <NavLinkItem to="/my-profile" label="Profile" icon={<LuUserRound />} />
+      <NavLinkItem
+        to="/api/v1/users/my-profile"
+        label="Profile"
+        icon={<LuUserRound />}
+      />
+      <NavLinkItem
+        to="/api/v1/users/logout"
+        label="logout"
+        icon={<LuLogOut />}
+      />
     </div>
   );
 
   return (
-    <div className="bg-gray-900 px-4 py-5 ">
-      <nav className="flex items-center justify-between px-4 gap-4">
+    <div className="bg-zinc-950 px-4 py-5 ">
+      <nav className="flex items-center justify-between px-6 py-4 shadow-md ">
         {/* Logo */}
         <div className="text-gray-200 text-xl md:text-2xl lg:text-3xl">
           Loopy

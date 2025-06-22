@@ -19,7 +19,7 @@ function Loading() {
       </div>
 
       {/* Loading Text */}
-      <p className="mt-4 text-sm text-gray-300 inset-3.5 animate-bounce">
+      <p className="mt-4 text-sm text-gray-300">
         Loading your video experience...
       </p>
     </div>

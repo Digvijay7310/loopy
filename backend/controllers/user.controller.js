@@ -152,14 +152,13 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 
 const updateUserProfile = asyncHandler(async (req, res, next) => {
     try {
-        const { email, username, avatar, coverImage } = req.body
+        const { fullName, avatar, coverImage } = req.body
 
         const updateUser = await User.findByIdAndUpdate(
             req.user,
             {
                 $set: {
-                    ...(email && { email }),
-                    ...(username && { username }),
+                    ...(fullName && { fullName }),
                     ...(avatar && { avatar }),
                     ...(coverImage && { coverImage }),
                 }

@@ -6,34 +6,29 @@ import { LiaCommentsSolid } from "react-icons/lia";
 function Comments() {
   const commentsVideo = new Array(12).fill(null);
   return (
-    <div className="bg-gray-800 min-h-screen pt-4 space-y-4">
+    <div className="bg-zinc-900 min-h-screen flex flex-col justify-center pt-4 ">
       {commentsVideo.map((_, idx) => {
         return (
           <div
             key={idx}
-            className="bg-gray-700 rounded-md flex items-start max-w-[800px] mx-auto p-4 gap-4"
+            className="bg-zinc-950 mb-3 rounded-md md:max-w-[500px] max-h-[130px] flex items-start mx-auto px-4 py-2 gap-2"
           >
             {/* Thumbnail */}
             <img
               src="https://up.yimg.com/ib/th?id=OIP.TcVLBkYGTO7F-M2i2N31EgHaEK&pid=Api&rs=1&c=1&qlt=95&w=203&h=114"
               alt="Thumbnail"
-              className="h-24 w-40 rounded-lg object-cover flex-shrink-0"
+              className="h-24 w-40 rounded-lg object-cover flex-shrink-0 border border-amber-200  "
             />
 
             {/* Content */}
-            <div className="flex flex-col flex-grow">
-              <p className="text-sm text-white">
+            <div className="flex justify-center flex-col flex-grow">
+              <p className=" text-white text-xs sm:sm md:lg">
                 This is a new video sharing Platform
               </p>
               <div className="flex gap-6 mt-2 text-gray-300 font-medium text-xs">
-                <p className="text-gray-100">
-                  Like
-                  <SlLike />
-                </p>
-                <p className="text-gray-100">
-                  Comment
-                  <LiaCommentsSolid />
-                </p>
+                <SlLike className="text-gray-100" />
+
+                <LiaCommentsSolid className="text-gray-100" />
               </div>
               <div className="flex items-center gap-3 mt-4">
                 <img
@@ -42,7 +37,7 @@ function Comments() {
                   className="h-7 w-7 rounded-full"
                 />
                 <div className="flex flex-col">
-                  <Link className="text-white text-sm font-semibold">
+                  <Link className="text-white text-xs sm:sm md:lg font-semibold">
                     Digvijay Kumar
                   </Link>
                   <p className="text-gray-400 text-xs">20 June 2025</p>

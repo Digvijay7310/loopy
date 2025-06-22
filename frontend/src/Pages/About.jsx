@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 function About() {
   return (
-    <div className="bg-gray-800 min-h-screen text-white px-4 py-10">
+    <div className="bg-zinc-900 min-h-screen text-white ">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-          <Link to="/" className="hover:text-green-400 transition-colors">
+          <Link to="/" className="hover:text-green-600 transition-colors">
             Loopy
           </Link>
         </h2>
@@ -15,7 +15,7 @@ function About() {
         <form
           id="solutions"
           name="solutions"
-          className="bg-gray-800 py-3 px-5 rounded-2xl flex flex-col"
+          className="bg-zinc-800 py-3 px-5 rounded-2xl flex flex-col"
         >
           <h3 className="text-xl font-bold mb-4">
             {" "}
@@ -27,7 +27,7 @@ function About() {
               id="tellus"
               name="tellus"
               placeholder="Describe your problem"
-              className="bg-gray-900 p-2 mb-1 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="bg-zinc-800 p-2 mb-1 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
             <button

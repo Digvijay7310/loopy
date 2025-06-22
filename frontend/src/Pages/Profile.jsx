@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import axiosInstance from "../axios";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import Loading from "../components/Loading";
 
 function profile() {
   const [profile, setProfile] = useState(null);
@@ -21,20 +22,24 @@ function profile() {
   }, []);
 
   if (!profile) {
-    return <div>Loading</div>;
+    return (
+      <div className="bg-zinc-900 flex justify-center items-center">
+        <Loading />
+      </div>
+    );
   }
   return (
-    <div className="bg-gradient-to-bl from-gray-700 to to-gray-800 min-h-screen px-6">
+    <div className="bg-zinc-900 min-h-screen px-6">
       {/* Account */}
-      <div className="bg-gray-600 flex justify-evenly gap-4 py-2  w-full ">
+      <div className="bg-zinc-800 flex justify-evenly gap-4 py-2  w-full ">
         <NavLink
-          to="/history"
+          to="/profile"
           className="text-white text-sm cursor-pointer px-3.5 py-1 hover:px-3.5 hover:py-1 hover:bg-green-500 hover:rounded-lg  transition-all"
         >
           All
         </NavLink>
         <NavLink
-          to="/history"
+          to="/api/v1/videos/my-videos"
           className="text-white text-sm cursor-pointer px-3.5 py-1 hover:px-3.5 hover:py-1 hover:bg-green-500 hover:rounded-lg  transition-all"
         >
           Your Videos
@@ -45,7 +50,7 @@ function profile() {
         <div className="bg-center bg-cover flex justify-center items-center mt-2 w-full flex-col min-w-[200px] max-w-[500px] rounded shadow-xl shadow-gray-700 ">
           {/* Add Cover image*/}
           <div
-            className="h-[100px] mb-[80px]  relative w-full rounded-2xl flex justify-center items-center"
+            className="h-[150px] relative w-full flex justify-center items-center"
             style={{
               backgroundImage: `url(${profile.coverImage} )`,
             }}
@@ -61,18 +66,18 @@ function profile() {
             {profile.email}
             <br />
           </Link>
-          <p className="bg-gradient-to-r from-gray-800 to-gray-500 rounded px-0.5 py-1 flex items-center text-center justify-center text-white text-xs mb-2">
+          <p className="bg-gradient-to-b from-zinc-800 to-zinc-500 rounded px-0.5 py-1 flex items-center text-center justify-center text-white text-xs mb-2">
             I'm a passionate content creator who loves turning ideas into
             engaging visuals and stories. Whether it's video editing,
             photography, or storytelling, I enjoy crafting content that
             inspires, entertains,
           </p>
 
-          <p className="flex items-center justify-center text-white mb-1">
+          <p className="flex items-center justify-center text-white">
             {profile.username}
           </p>
 
-          <p className="flex items-center justify-center text-white mb-1">
+          <p className="flex items-center justify-center text-white">
             {profile.fullName}
           </p>
 
