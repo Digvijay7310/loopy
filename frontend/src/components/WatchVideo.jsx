@@ -40,13 +40,12 @@ function WatchVideo() {
         {/* Video section */}
         <div className="w-full h-auto bg-zinc-900 ">
           <div className="flex flex-col py-1">
-            <div className="rounded-md h-[200px] sm:h-[450px] bg-red-800 overflow-hidden">
+            <div className="rounded-md h-[200px] sm:h-[450px] bg-zinc-800 overflow-hidden flex justify-center items-center">
               <video
                 src="../../video.mp4"
                 controls
                 loop
-                muted
-                onMouseOver={videos.play}
+                className="w-full max-w-[1267px] max-h-[450px] h-full object-contain"
               >
                 Video
               </video>
