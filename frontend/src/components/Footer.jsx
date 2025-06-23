@@ -10,7 +10,7 @@ import { Link, NavLink } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-zinc-900 text-gray-300 py-10 px-6 w-full bottom-0 right-0">
+    <footer className="bg-zinc-950 text-gray-300 py-10 px-6 w-full bottom-0 right-0">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand */}
         <div>

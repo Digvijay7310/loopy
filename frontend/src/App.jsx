@@ -18,6 +18,7 @@ import Faq from "./Pages/Faq";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import HelpCenter from "./Pages/HelpCenter";
 import Terms from "./Pages/Terms";
+import Video from "./Pages/Video";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             </Route>
             {/* Videos Routes */}
             <Route path="/videos" element={<Layout />}>
+              <Route path=":id" element={<Video />} />
               <Route path="video-upload" element={<VideoUpload />} />
               <Route path="about" element={<About />} />
               <Route path="my-videos" element={<MyVideos />} />

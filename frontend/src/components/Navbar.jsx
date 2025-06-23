@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { RiSearchLine, RiVideoUploadLine } from "react-icons/ri";
-import { IoHomeOutline, IoLogOut } from "react-icons/io5";
+import { IoHomeOutline } from "react-icons/io5";
 import { SlLike } from "react-icons/sl";
 import { LiaCommentsSolid } from "react-icons/lia";
-import { LuLogOut, LuOmega, LuUserRound } from "react-icons/lu";
+import { LuLogOut, LuUserRound } from "react-icons/lu";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 
@@ -13,38 +13,26 @@ function Navbar() {
 
   const navLinks = (
     <div className="flex flex-col lg:flex-row lg:items-center lg:gap-4 text-sm">
-      <NavLinkItem to="/api/v1/users" label="Home" icon={<IoHomeOutline />} />
+      <NavLinkItem to="/users" label="Home" icon={<IoHomeOutline />} />
 
       <NavLinkItem
-        to="api/v1/videos/video-upload"
+        to="/videos/video-upload"
         label="Upload"
         icon={<RiVideoUploadLine />}
       />
+      <NavLinkItem to="/users/my-likes" label="Likes" icon={<SlLike />} />
       <NavLinkItem
-        to="/api/v1/users/my-likes"
-        label="Likes"
-        icon={<SlLike />}
-      />
-      <NavLinkItem
-        to="/my-comments"
+        to="/users/my-comments"
         label="Comments"
         icon={<LiaCommentsSolid />}
       />
-      <NavLinkItem
-        to="/api/v1/users/my-profile"
-        label="Profile"
-        icon={<LuUserRound />}
-      />
-      <NavLinkItem
-        to="/api/v1/users/logout"
-        label="logout"
-        icon={<LuLogOut />}
-      />
+      <NavLinkItem to="/users/profile" label="Profile" icon={<LuUserRound />} />
+      <NavLinkItem to="/users/logout" label="logout" icon={<LuLogOut />} />
     </div>
   );
 
   return (
-    <div className="bg-zinc-950 px-4 py-5 ">
+    <div className="bg-zinc-950 px-4  ">
       <nav className="flex items-center justify-between px-6 py-4 shadow-md ">
         {/* Logo */}
         <div className="text-gray-200 text-xl md:text-2xl lg:text-3xl">
@@ -54,7 +42,7 @@ function Navbar() {
         {/* Search Bar - Always Visible */}
         <form className="flex items-center w-full max-w-md mx-4 flex-grow">
           <input
-            className="text-gray-200 w-full p-2 text-sm bg-gray-700 outline-0"
+            className="text-gray-200 w-full p-2 text-sm bg-zinc-800 outline-0 rounded-l-xl"
             type="search"
             placeholder="Search Here..."
             autoComplete="off"
@@ -62,7 +50,7 @@ function Navbar() {
             id="search"
           />
           <button
-            className="bg-green-600 text-white h-9 w-10 flex justify-center items-center"
+            className="bg-red-600 text-white h-9 w-10 flex justify-center items-center rounded-r-xl"
             type="submit"
           >
             <RiSearchLine className="text-lg font-bold" />
@@ -75,7 +63,7 @@ function Navbar() {
         {/* Hamburger Menu Button: show on md and below */}
         <button
           onClick={() => setMenuOpen(true)}
-          className="lg:hidden text-gray-200 text-2xl"
+          className="lg:hidden text-gray-200 text-2xl cursor-pointer"
           aria-label="Open menu"
         >
           <HiOutlineMenuAlt1 />
@@ -84,7 +72,7 @@ function Navbar() {
 
       {/* Mobile Slide Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-gray-800 text-white p-5 z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-72 bg-zinc-800 text-white p-5 z-50 transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -111,8 +99,8 @@ const NavLinkItem = ({ to, label, icon }) => (
     className={({ isActive }) =>
       `flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 ${
         isActive
-          ? "bg-green-600 text-white"
-          : "text-gray-300 hover:bg-gray-700 hover:text-white"
+          ? "bg-red-600 text-white"
+          : "text-white-300 bg-zinc-800 text-white hover:bg-zinc-900 "
       }`
     }
   >
