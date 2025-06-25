@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function About() {
   return (
-    <div className="bg-zinc-900 min-h-screen text-white ">
+    <main className="bg-zinc-900 min-h-screen text-white ">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl sm:text-5xl font-bold mb-4">
           <Link to="/" className="hover:text-green-600 transition-colors">
@@ -39,7 +39,7 @@ function About() {
           </div>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -3,10 +3,10 @@ import { FaBook } from "react-icons/fa";
 
 function Faq() {
   return (
-    <div className="bg-zinc-900 min-h-screen text-white p-6">
-      <h1 className="text-3xl font-bold mb-6 flex gap-2">
+    <main className="bg-zinc-900 min-h-screen text-white p-6">
+      <h2 className="text-3xl font-bold mb-6 flex gap-2">
         <FaBook /> Frequently Asked Questions
-      </h1>
+      </h2>
 
       <div className="space-y-4">
         <div>
@@ -77,7 +77,7 @@ function Faq() {
           </p>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

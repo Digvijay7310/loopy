@@ -6,7 +6,7 @@ import { LiaCommentsSolid } from "react-icons/lia";
 function Comments() {
   const commentsVideo = new Array(12).fill(null);
   return (
-    <div className="bg-zinc-900 min-h-screen flex flex-col justify-center pt-4 ">
+    <main className="bg-zinc-900 min-h-screen flex flex-col justify-center pt-4 ">
       {commentsVideo.map((_, idx) => {
         return (
           <div
@@ -47,7 +47,7 @@ function Comments() {
           </div>
         );
       })}
-    </div>
+    </main>
   );
 }
 

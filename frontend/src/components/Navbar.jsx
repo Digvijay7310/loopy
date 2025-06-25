@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { RiSearchLine, RiVideoUploadLine } from "react-icons/ri";
+import { RiSearchLine } from "react-icons/ri";
 import { IoHomeOutline } from "react-icons/io5";
-import { SlLike } from "react-icons/sl";
-import { LiaCommentsSolid } from "react-icons/lia";
-import { LuLogOut, LuUserRound } from "react-icons/lu";
+import {
+  LuHardDriveUpload,
+  LuLogIn,
+  LuUserPlus,
+  LuUserRound,
+} from "react-icons/lu";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
 
@@ -16,18 +19,18 @@ function Navbar() {
       <NavLinkItem to="/users" label="Home" icon={<IoHomeOutline />} />
 
       <NavLinkItem
-        to="/videos/video-upload"
+        to="/videos/upload"
         label="Upload"
-        icon={<RiVideoUploadLine />}
-      />
-      <NavLinkItem to="/users/my-likes" label="Likes" icon={<SlLike />} />
-      <NavLinkItem
-        to="/users/my-comments"
-        label="Comments"
-        icon={<LiaCommentsSolid />}
+        icon={<LuHardDriveUpload />}
       />
       <NavLinkItem to="/users/profile" label="Profile" icon={<LuUserRound />} />
-      <NavLinkItem to="/users/logout" label="logout" icon={<LuLogOut />} />
+
+      <NavLinkItem
+        to="/users/register"
+        label="Register"
+        icon={<LuUserPlus />}
+      />
+      <NavLinkItem to="/users/login" label="Login" icon={<LuLogIn />} />
     </div>
   );
 
@@ -35,7 +38,7 @@ function Navbar() {
     <div className="bg-zinc-950 px-4  ">
       <nav className="flex items-center justify-between px-6 py-4 shadow-md ">
         {/* Logo */}
-        <div className="text-gray-200 text-xl md:text-2xl lg:text-3xl">
+        <div className="text-gray-200 text-xl md:text-2xl  lg:text-4xl">
           Loopy
         </div>
 

@@ -24,7 +24,7 @@ function Logout() {
     }
   };
   return (
-    <div className="min-h-screen bg-zinc-900">
+    <main className="min-h-screen bg-zinc-900">
       <div className="pt-6 flex flex-col items-center justify-center">
         <h3 className="text-white text-3xl font-semibold text-center ">
           You want to logout
@@ -42,7 +42,7 @@ function Logout() {
           {loading ? "You are logouting" : "logout"}
         </button>
       </div>
-    </div>
+    </main>
   );
 }
 

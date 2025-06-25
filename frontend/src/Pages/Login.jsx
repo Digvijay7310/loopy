@@ -21,7 +21,7 @@ function Login() {
     setLoading(true);
     try {
       const res = await axiosInstance.post(
-        "/login",
+        "users/login",
 
         form,
 
@@ -37,7 +37,7 @@ function Login() {
       console.log("Login successfull", res.data);
 
       alert("login Successfull");
-      navigate("/api/v1/users/profile");
+      navigate("/users/profile");
     } catch (error) {
       setError(
         "Login failed, please try again later",
@@ -48,7 +48,7 @@ function Login() {
     }
   };
   return (
-    <div className="min-h-screen flex flex-col items-center bg-zinc-800">
+    <main className="min-h-screen flex flex-col items-center bg-zinc-900">
       <form
         id="loginForm"
         onSubmit={handleLogin}
@@ -73,7 +73,7 @@ function Login() {
           <input
             id="email"
             name="email"
-            autoComplete="email"
+            autoComplete="on"
             type="email"
             onChange={handleOnChange}
             placeholder="Enter Email Address"
@@ -93,7 +93,7 @@ function Login() {
             <input
               id="password"
               name="password"
-              autoComplete="current-password"
+              autoComplete="on"
               type={showPassword ? "text" : "password"}
               onChange={handleOnChange}
               placeholder="Enter Password"
@@ -127,7 +127,7 @@ function Login() {
           </Link>{" "}
         </p>
       </form>
-    </div>
+    </main>
   );
 }
 

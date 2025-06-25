@@ -3,7 +3,7 @@ import { FaHandsHelping } from "react-icons/fa";
 
 function HelpCenter() {
   return (
-    <div className="bg-zinc-900 min-h-screen p-6 text-white font-extralight">
+    <main className="bg-zinc-900 min-h-screen p-6 text-white font-extralight">
       <div className="p-4 bg-zinc-800 rounded-2xl">
         <h3 className="text-center text-2xl font-bold flex ">
           <FaHandsHelping className="text-2xl" />
@@ -41,7 +41,7 @@ function HelpCenter() {
           Still have questions? Contact us at: <span>support@loopyapp.com</span>
         </p>
       </div>
-    </div>
+    </main>
   );
 }
 

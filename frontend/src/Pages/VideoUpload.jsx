@@ -1,26 +1,54 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axios";
 
 function VideoUpload() {
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    thumbnailFile: "",
+    videoFile: "",
+  });
+  const [thumbnailFile, setThumbnailFile] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    // console.log(form);
+  };
+
   const handleUpload = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
     const formData = new FormData();
-    formData.append("video", videoFile);
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("videoUrl", form.videoUrl);
+    formData.append("thumbnail", form.thumbnailFile);
 
     try {
-      const res = await axios.post("/video/upload", formData, {
+      const res = await axiosInstance.post("/videos/upload", formData, {
+        withCredentials: true,
+
         headers: {
-          "Content-Type": "multipart/form-Data",
+          "Content-Type": "multipart/form-data",
         },
       });
       alert("upload successfull");
+      console.log(res);
+      navigate("/users");
     } catch (error) {
-      alert("Upload failed", error?.res?.data.message);
+      alert("Upload failed: " + error?.response?.data.message);
+      console.error("Error in uploading", error);
     }
   };
+
   return (
-    <div className=" bg-zinc-900 min-h-screen ">
+    <main className=" bg-zinc-900 min-h-screen ">
       <form
         onSubmit={handleUpload}
         className="flex justify-center items-center flex-col rounded-2xl"
@@ -37,9 +65,9 @@ function VideoUpload() {
             name="title"
             id="title"
             type="text"
-            // value={form.fullName}
+            value={form.title}
             autoComplete="off"
-            // onChange={handleOnChange}
+            onChange={handleOnChange}
             placeholder="Enter Title"
             className="bg-zinc-800 mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 focus:ring-1 focus:ring-red-600 focus:transform-border"
           />
@@ -49,13 +77,13 @@ function VideoUpload() {
           <label htmlFor="description" className="font-semibold text-white">
             Description:
           </label>
-          <input
+          <textarea
             name="description"
             id="description"
-            // value={form.username}
+            value={form.description}
             type="text"
             autoComplete="off"
-            // onChange={handleOnChange}
+            onChange={handleOnChange}
             placeholder="Enter Description"
             className="bg-zinc-800 mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 focus:ring-1 focus:ring-red-600 focus:transform-border"
           />
@@ -69,7 +97,8 @@ function VideoUpload() {
             type="file"
             name="thumbnail"
             autoComplete="off"
-            // onChange={handleOnChange}
+            value={form.thumbnailFile}
+            onChange={(e) => setThumbnailFile(e.target.files[0])}
             accept="image/*"
             id="thumbnail"
             className="bg-zinc-800 cursor-pointer mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 focus:ring-1 focus:ring-red-600 focus:transform-border"
@@ -78,13 +107,14 @@ function VideoUpload() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 md:place-items-center">
           <label htmlFor="video" className="font-semibold text-white">
-            CoverImage:
+            Video:
           </label>
           <input
             type="file"
             name="video"
             autoComplete="off"
-            // onChange={handleOnChange}
+            value={form.videoFile}
+            onChange={(e) => setVideoFile(e.target.files[0])}
             accept="video/*"
             id="video"
             className="bg-zinc-800 cursor-pointer mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 focus:ring-1 focus:ring-red-600 focus:transform-border"
@@ -104,7 +134,7 @@ function VideoUpload() {
           {loading ? "Uploading..." : "Upload"}
         </button>
       </form>
-    </div>
+    </main>
   );
 }
 

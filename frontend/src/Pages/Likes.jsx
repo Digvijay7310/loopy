@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function Likes() {
   const LikesVideo = new Array(4).fill(null);
   return (
-    <div className="bg-zinc-900 min-h-screen flex flex-col pt-4 ">
+    <main className="bg-zinc-900 min-h-screen flex flex-col pt-4 ">
       {LikesVideo.map((_, idx) => {
         return (
           <div
@@ -47,7 +47,7 @@ function Likes() {
           </div>
         );
       })}
-    </div>
+    </main>
   );
 }
 

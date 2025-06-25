@@ -3,7 +3,7 @@ import { FaBookReader } from "react-icons/fa";
 
 function PrivacyPolicy() {
   return (
-    <div className="bg-zinc-900 min-h-screen text-white p-6">
+    <main className="bg-zinc-900 min-h-screen text-white p-6">
       <h1 className="text-3xl font-bold mb-6  flex gap-2">
         <FaBookReader /> Privacy Policy
       </h1>
@@ -61,7 +61,7 @@ function PrivacyPolicy() {
           For privacy concerns, email us ata privacy@loopy.com
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

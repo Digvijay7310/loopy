@@ -6,6 +6,16 @@ import {
   FaYoutube,
   FaLinkedinIn,
 } from "react-icons/fa";
+import { HiShieldCheck } from "react-icons/hi";
+import { IoHelpCircle, IoHomeOutline } from "react-icons/io5";
+import {
+  LuBookA,
+  LuFileText,
+  LuHardDriveUpload,
+  LuMailQuestion,
+  LuMessageCircleQuestion,
+  LuUsers,
+} from "react-icons/lu";
 import { Link, NavLink } from "react-router-dom";
 
 function Footer() {
@@ -43,7 +53,11 @@ function Footer() {
           <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="/users" className="hover:text-red-500 transition">
+              <Link
+                to="/users"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
+              >
+                <IoHomeOutline />
                 Home
               </Link>
             </li>
@@ -51,21 +65,28 @@ function Footer() {
             <li>
               <Link
                 to="/videos/video-upload"
-                className="hover:text-red-500 transition"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
               >
+                {" "}
+                <LuHardDriveUpload />
                 Upload
               </Link>
             </li>
             <li>
-              <Link to="#" className="hover:text-red-500 transition">
+              <Link
+                to="#"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
+              >
+                <LuUsers />
                 Channels
               </Link>
             </li>
             <li>
               <Link
                 to="/videos/about"
-                className="hover:text-red-500 transition"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
               >
+                <LuBookA />
                 About Us
               </Link>
             </li>
@@ -77,26 +98,36 @@ function Footer() {
           <h3 className="text-xl font-semibold mb-4">Support</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="/users/help" className="hover:text-red-500 transition">
-                Help Center
+              <Link
+                to="/users/help"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
+              >
+                <IoHelpCircle /> Help Center
               </Link>
             </li>
             <li>
-              <Link to="/users/terms" className="hover:text-red-500 transition">
-                Terms of Service
+              <Link
+                to="/users/terms"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
+              >
+                <LuFileText /> Terms of Service
               </Link>
             </li>
             <li>
               <Link
                 to="/users/privacy"
-                className="hover:text-red-500 transition"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
               >
+                <HiShieldCheck />
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link to="/users/faq" className="hover:text-red-500 transition">
-                FAQ
+              <Link
+                to="/users/faq"
+                className="flex items-center gap-2 hover:text-red-500 transition duration-200"
+              >
+                <LuMessageCircleQuestion /> FAQ
               </Link>
             </li>
           </ul>

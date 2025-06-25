@@ -5,7 +5,7 @@ import VideoCard from "../components/VideoCard";
 function Video() {
   const videos = new Array(10).fill(null);
   return (
-    <div className="bg-zinc-900">
+    <main className="bg-zinc-900">
       <div>
         <WatchVideo />
       </div>
@@ -16,7 +16,7 @@ function Video() {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function MyVideos() {
   const myVideos = new Array(4).fill(null);
   return (
-    <div className="bg-zinc-800 min-h-screen flex flex-col pt-4 ">
+    <main className="bg-zinc-800 min-h-screen flex flex-col pt-4 ">
       {myVideos.map((_, idx) => {
         return (
           <div
@@ -50,7 +50,7 @@ function MyVideos() {
           </div>
         );
       })}
-    </div>
+    </main>
   );
 }
 

@@ -47,7 +47,7 @@ function UpdateProfile() {
     }
   };
   return (
-    <div className="bg-zinc-900 min-h-screen ">
+    <main className="bg-zinc-900 min-h-screen ">
       <form
         onSubmit={handleUpdate}
         className="flex justify-center items-center flex-col rounded-2xl"
@@ -115,7 +115,7 @@ function UpdateProfile() {
           {loading ? "Updating..." : "Update"}
         </button>
       </form>
-    </div>
+    </main>
   );
 }
 

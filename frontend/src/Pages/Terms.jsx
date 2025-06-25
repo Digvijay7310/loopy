@@ -3,7 +3,7 @@ import { FaAddressBook } from "react-icons/fa";
 
 function Terms() {
   return (
-    <div className="bg-zinc-900 min-h-screen text-white p-6">
+    <main className="bg-zinc-900 min-h-screen text-white p-6">
       <div className="bg-zinc-800 rounded-xl p-4">
         <h3 className="font-bold space-x-1 text-2xl flex gap-2">
           <FaAddressBook />
@@ -68,7 +68,7 @@ function Terms() {
           </ol>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -21,10 +21,10 @@ function VideoCard() {
     videoRef.current.currentTime = 0;
   };
   return (
-    <div className="bg-zinc-900 px-4 text-white">
-      <div className="p-2">
+    <div className="bg-zinc-900 text-white">
+      <div className="p-2 ">
         {/* Video card */}
-        <div className="flex flex-col  bg-zinc-950 max-w-[500px]">
+        <div className="flex flex-col cursor-pointer bg-zinc-950 max-w-[500px]">
           {/* Hover Container */}
           <div
             className="relative w-full h-[200px] "

@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import VideoCard from "../components/VideoCard";
+import axiosInstance from "../axios.js";
 
 function Home() {
-  const videoCards = new Array(12).fill(null); // 12 sample cards
+  // const videoCards = new Array(12).fill(null); // 12 sample cards
+
+  const [loading, setLoading] = useState(false);
+  try {
+    const res = axiosInstance.get("/videos/videos", { withCredentials: true });
+    console.log(res.data);
+    alert("Video fetch successfull");
+  } catch (error) {
+    console.error("Error in fetching", error);
+  }
 
   return (
-    <div className="bg-zinc-900 min-h-screen p-4">
+    <main className="bg-zinc-900 min-h-screen">
       {/* Trending */}
 
       <div
@@ -13,17 +23,15 @@ function Home() {
           grid
           grid-cols-2
           sm:grid-cols-3
-          md:grid-cols-4
-          gap-4
+          md:grid-cols-3
+          lg:grid-cols-4
           py-2
           overflow-x-auto
         "
       >
-        {videoCards.map((_, idx) => (
-          <VideoCard key={idx} />
-        ))}
+        {<VideoCard key={idx} />}
       </div>
-    </div>
+    </main>
   );
 }
 
