@@ -39,7 +39,7 @@ function Register() {
     }
 
     try {
-      const res = await axiosInstance.post("/register", formData, {
+      const res = await axiosInstance.post("users/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -51,7 +51,7 @@ function Register() {
         "Authorization"
       ] = `Bearer ${res.data.data.accessToken}`;
       alert("User Register successfully");
-      navigate("/users/profile");
+      navigate("/users/");
     } catch (error) {
       alert(error.response?.data?.message || "Registration failed");
     } finally {

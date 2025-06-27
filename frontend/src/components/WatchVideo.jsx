@@ -1,39 +1,24 @@
 import React, { useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import VideoCard from "../components/VideoCard";
 import { SlLike } from "react-icons/sl";
 import {
-  LiaAngry,
   LiaCommentDots,
   LiaCommentSolid,
   LiaShareSolid,
 } from "react-icons/lia";
+import PageNotFound from "../Pages/PageNotFound";
 
-function WatchVideo() {
-  const videos = Array(10).fill(null);
-  const [show, setShow] = useState(false);
-  const [like, setLike] = useState(0);
-  const [showComment, setShowComment] = useState(false);
+function WatchVideo({ video }) {
+  if (!video) return <PageNotFound />;
 
-  const comments = [
-    "Best video",
-    "keep it up videos",
-    "Its not roast its fry",
-    "Best looper",
-    "Best looper aka dhooper",
-  ];
+  const [showDesc, setShowDesc] = useState(false);
+  const [like, setLike] = useState(video?.likes?.length || 0);
+  const [showComments, setShowComments] = useState(false);
 
-  const handleShow = () => {
-    setShow((prev) => !prev);
-  };
+  const toggleDesc = () => setShowDesc((prev) => !prev);
+  const toggleComments = () => setShowComments((prev) => !prev);
+  const incLike = () => setLike((prev) => prev + 1);
 
-  const likeCount = () => {
-    setLike(like + 1);
-  };
-
-  const handleShowComment = () => {
-    setShowComment((prev) => !prev);
-  };
   return (
     <div className="bg-zinc-900 text-white">
       <div className="flex justify-between flex-wrap">
@@ -42,31 +27,30 @@ function WatchVideo() {
           <div className="flex flex-col py-1">
             <div className="rounded-md h-[200px] sm:h-[450px] bg-zinc-800 overflow-hidden flex justify-center items-center">
               <video
-                src="../../video.mp4"
+                src={video.videoUrl}
                 controls
                 loop
                 className="w-full max-w-[1267px] max-h-[450px] h-full object-contain"
-              >
-                Video
-              </video>
+              />
             </div>
           </div>
           <div className="rounded-xl cla px-5 ">
-            <p>
-              This is video playing this is demo video. It's trail video no
-              copyright
-            </p>
+            <h3 className="font-semibold text-lg">{video.title}</h3>
+            <p className="font-light">Views: {video.views}</p>
             <div className="flex justify-around my-2">
               {/* Like  */}
-              <p className="flex justify-center gap-2 items-center cursor-pointer">
-                <SlLike onClick={likeCount} /> {like}
-              </p>
+              <button
+                onClick={incLike}
+                className="flex justify-center gap-2 items-center cursor-pointer"
+              >
+                <SlLike /> {like}
+              </button>
               {/* Comment */}
               <p
-                onClick={handleShowComment}
+                onClick={toggleComments}
                 className="flex justify-center items-center gap-2 cursor-pointer"
               >
-                {showComment ? <LiaCommentSolid /> : <LiaCommentDots />}
+                {showComments ? <LiaCommentSolid /> : <LiaCommentDots />}
               </p>
               {/* Share */}
 
@@ -80,47 +64,34 @@ function WatchVideo() {
                 <button
                   type="button"
                   className="cursor-pointer rounded-full px-2 py-0.5  transition-all duration-1000"
-                  onClick={handleShow}
+                  onClick={toggleDesc}
                 >
-                  {show ? <FaArrowDown /> : <FaArrowUp />}
+                  {showDesc ? <FaArrowDown /> : <FaArrowUp />}
                 </button>
               </p>
 
-              {show && (
+              {showDesc && (
                 <p className="text-sm mt-2 p-2 rounded-lg bg-zinc-700">
-                  This is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. vThis
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. This
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. This
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. This
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. This
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. This
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose. This
-                  is the video Descrption. You can expand or collapse this
-                  section. This video mis made for entermainment porpose.
+                  {video.description}
                 </p>
               )}
-              {showComment && (
-                <div className="bg-zinc-800 p-2 text-md rounded-lg ">
-                  <p className="font-semibold text-white m-1 font-mono">
-                    Comments
-                  </p>
-                  {comments.map((comment, idx) => (
-                    <div key={idx} className="bg-zinc-800">
-                      <p className="text-xs font-extralight m-1 bg-zinc-700">
-                        {comment}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
+
+            {showComments && (
+              <div className="bg-zinc-800 p-2 text-md rounded ">
+                <h2 className="font-semibold text-white font-mono">Comments</h2>
+                {video.comments && video.comments.length > 0 ? (
+                  video.comments.map((c, i) => (
+                    <div key={i} className="mb-2">
+                      <b>{c.commentBy?.username}:</b>
+                      {c.text || c.content}
+                    </div>
+                  ))
+                ) : (
+                  <p>No Comments yet.</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

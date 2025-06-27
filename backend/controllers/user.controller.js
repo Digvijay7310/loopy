@@ -1,8 +1,8 @@
 import { User } from "../models/user.model.js";
 import { Video } from "../models/video.model.js";
-import apiError from "../utils/ApiError.js";
-import apiResponse from "../utils/ApiResponse.js";
-import asyncHandler from "../utils/AsyncHandler.js";
+import apiError from "../utils/apiError.js";
+import apiResponse from "../utils/apiResponse.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken"
 

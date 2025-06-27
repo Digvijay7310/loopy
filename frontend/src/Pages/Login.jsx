@@ -37,7 +37,7 @@ function Login() {
       console.log("Login successfull", res.data);
 
       alert("login Successfull");
-      navigate("/users/profile");
+      navigate("/users");
     } catch (error) {
       setError(
         "Login failed, please try again later",

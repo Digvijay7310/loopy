@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-function VideoCard() {
+function VideoCard({ video }) {
   const videoRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const hoverTimeoutRef = useRef(null);
 
+  // Work on mouse Enter on card
   const handleMouseEnter = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       setIsHovered(true);
@@ -13,6 +14,7 @@ function VideoCard() {
     }, 500);
   };
 
+  // Work when mouse leave the card
   const handleMouseLeave = () => {
     clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = null;
@@ -20,52 +22,56 @@ function VideoCard() {
     videoRef.current?.pause();
     videoRef.current.currentTime = 0;
   };
-  return (
-    <div className="bg-zinc-900 text-white">
-      <div className="p-2 ">
-        {/* Video card */}
-        <div className="flex flex-col cursor-pointer bg-zinc-950 max-w-[500px]">
-          {/* Hover Container */}
-          <div
-            className="relative w-full h-[200px] "
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {/* Thumbnail */}
-            <img
-              src="https://up.yimg.com/ib/th?id=OIP.TcVLBkYGTO7F-M2i2N31EgHaEK&pid=Api&rs=1&c=1&qlt=95&w=203&h=114"
-              alt="thumbnail"
-              className="w-full h-[200px] max-w-[500px] rounded-lg "
-            />
-            <video
-              ref={videoRef}
-              className={`absolute top-0 left-0 w-full h-[200px] rounded-lg object-cover transition-opacity duration-200 ${
-                isHovered ? "opacity-100" : "opacity-0"
-              }`}
-              src="../../video.mp4"
-              muted
-              loop
-              preload="none"
-            />
-          </div>
 
-          {/* Info */}
-          <p className="text-gray-200 text-xs mt-1">
-            This video is made for design purpose only made by Digvijay Kumar,
-            first creator of Loopy
-          </p>
-          <p className="text-gray-300 text-xs">Views: 500</p>
-          <div className="flex items-center gap-2">
-            <img
-              src="https://icon-library.com/images/user-png-icon/user-png-icon-16.jpg"
-              alt="avatar"
-              className="rounded-full h-8 w-8"
-            />
-            <p className="text-xs text-white">Digvijay kumar</p>
+  if (!video) return null;
+  return (
+    <Link to={`/videos/video/${video._id}`} className="bg-zinc-900 text-white">
+      <div className="bg-zinc-900 text-white">
+        <div className="p-2 ">
+          {/* Video card */}
+          <div className="flex flex-col cursor-pointer bg-zinc-950 max-w-[500px]">
+            {/* Hover Container */}
+            <div
+              className="relative w-full h-[200px] "
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              {/* Thumbnail */}
+              <img
+                src={video.thumbnail}
+                alt={video.title}
+                className="w-full h-[200px] max-w-[500px] rounded-lg "
+              />
+              {/* Preview Video */}
+              <video
+                ref={videoRef}
+                className={`absolute top-0 left-0 w-full h-[200px] rounded-lg object-cover transition-opacity duration-200 ${
+                  isHovered ? "opacity-100" : "opacity-0"
+                }`}
+                src={video.videoUrl}
+                muted
+                loop
+                preload="none"
+              />
+            </div>
+
+            {/* Info */}
+            <p className="text-gray-200 text-xs mt-1">{video.title}</p>
+            <p className="text-gray-300 text-xs">views: {video.views}</p>
+            <div className="flex items-center gap-2">
+              <img
+                src={video.owner?.avatar}
+                alt="Owner Avatar"
+                className="rounded-full h-8 w-8"
+              />
+              <p className="text-xs text-white flex justify-center items-center">
+                {video.owner?.fullName}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

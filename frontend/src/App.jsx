@@ -20,6 +20,8 @@ import HelpCenter from "./Pages/HelpCenter";
 import Terms from "./Pages/Terms";
 import Video from "./Pages/Video";
 import PageNotFound from "./Pages/PageNotFound";
+import Uploading from "./components/Uploading";
+import WatchVideo from "./components/WatchVideo";
 
 function App() {
   return (
@@ -32,7 +34,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="/users/register" element={<Register />} />
               <Route path="/users/login" element={<Login />} />
-              {/* <Route path="/users/login" element={<Abc />} /> */}
+              {/* <Route path="/users/login" element={<Uploading />} /> */}
               <Route path="/users/logout" element={<Logout />} />
               <Route path="/users/my-comments" element={<Comments />} />
               <Route path="/users/my-likes" element={<Likes />} />
@@ -45,7 +47,7 @@ function App() {
             </Route>
             {/* Videos Routes */}
             <Route path="/videos" element={<Layout />}>
-              <Route path=":id" element={<Video />} />
+              <Route path="video/:id" element={<Video />} />
               <Route path="upload" element={<VideoUpload />} />
               <Route path="about" element={<About />} />
               <Route path="my-videos" element={<MyVideos />} />

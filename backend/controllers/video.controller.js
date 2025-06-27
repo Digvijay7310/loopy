@@ -52,6 +52,8 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
 const getAllVideos = asyncHandler(async (req, res, next) => {
     try {
         const videos = await Video.find({})
+            .populate("owner", "fullName avatar")
+            .exec()
 
         //If not video then send an error
         if (!videos.length) {
