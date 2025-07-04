@@ -2,8 +2,4 @@
 node_modules
 
 #Ignore all environment files
-<<<<<<< HEAD
 .env
-=======
-.env
->>>>>>> 59f8ea7ab1f68938a674c08be1af616bde641b88
