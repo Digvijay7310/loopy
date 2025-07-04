@@ -71,7 +71,7 @@ function Login() {
             Email:{" "}
           </label>
           <input
-            id="email"
+            // id="email"
             name="email"
             autoComplete="on"
             type="email"
@@ -122,7 +122,7 @@ function Login() {
         <br />
         <p className="text-white text-sm text-center">
           Don't have an account ?{" "}
-          <Link className="text-red-600" to="/api/v1/users/register">
+          <Link className="text-red-600" to="/users/register">
             Register
           </Link>{" "}
         </p>

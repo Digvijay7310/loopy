@@ -82,7 +82,7 @@ function Register() {
               id="fullName"
               type="text"
               value={form.fullName}
-              autoComplete="off"
+              autoComplete="on"
               onChange={handleOnChange}
               placeholder="FullName"
               className="bg-zinc-800 mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 x  ring-1 ring-red-600 "
@@ -98,7 +98,7 @@ function Register() {
               id="username"
               value={form.username}
               type="text"
-              autoComplete="off"
+              autoComplete="on"
               onChange={handleOnChange}
               placeholder="Enter username"
               className="bg-zinc-800 mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 ring-1 ring-red-600 "
@@ -112,8 +112,8 @@ function Register() {
             <input
               name="email"
               type="email"
-              id="email"
-              autoComplete="off"
+              // id="email"
+              autoComplete="on"
               value={form.email}
               onChange={handleOnChange}
               placeholder="Enter Email"
@@ -129,7 +129,7 @@ function Register() {
               name="password"
               type="password"
               id="password"
-              autoComplete="off"
+              autoComplete="on"
               value={form.password}
               onChange={handleOnChange}
               placeholder="Enter Password"
@@ -144,7 +144,7 @@ function Register() {
             <input
               type="file"
               name="avatar"
-              autoComplete="off"
+              autoComplete="on"
               onChange={handleOnChange}
               accept="image/*"
               id="avatar"
@@ -159,7 +159,7 @@ function Register() {
             <input
               type="file"
               name="coverImage"
-              autoComplete="off"
+              autoComplete="on"
               onChange={handleOnChange}
               accept="image/*"
               id="coverImage"
@@ -169,7 +169,7 @@ function Register() {
 
           <button
             type="submit"
-            id="register"
+            // id="register"
             name="register"
             disabled={loading}
             className={`mt-3 text-white bg-red-600 hover:bg-red-500 cursor-pointer px-5 py-1.5 rounded-lg hover-bg-red-700 transition-all${
