@@ -24,19 +24,16 @@ function VideoUpload() {
     e.preventDefault();
     setLoading(true);
 
+
     const formData = new FormData();
     formData.append("title", form.title);
     formData.append("description", form.description);
-    formData.append("videoUrl", form.videoUrl);
-    formData.append("thumbnail", form.thumbnailFile);
+    formData.append("videoUrl", videoFile);
+    formData.append("thumbnail", thumbnailFile);
 
     try {
       const res = await axiosInstance.post("/videos/upload", formData, {
-        withCredentials: true,
-
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        withCredentials: true     
       });
       alert("upload successfull");
       console.log(res);
@@ -65,8 +62,7 @@ function VideoUpload() {
             name="title"
             id="title"
             type="text"
-            value={form.title}
-            autoComplete="off"
+            autoComplete="on"
             onChange={handleOnChange}
             placeholder="Enter Title"
             className="bg-zinc-800 mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 focus:ring-1 focus:ring-red-600 focus:transform-border"
@@ -80,9 +76,8 @@ function VideoUpload() {
           <textarea
             name="description"
             id="description"
-            value={form.description}
             type="text"
-            autoComplete="off"
+            autoComplete="on"
             onChange={handleOnChange}
             placeholder="Enter Description"
             className="bg-zinc-800 mb-2 w-[250px] px-4 py-2 rounded-lg text-gray-100 outline-0 focus:ring-1 focus:ring-red-600 focus:transform-border"
@@ -96,8 +91,7 @@ function VideoUpload() {
           <input
             type="file"
             name="thumbnail"
-            autoComplete="off"
-            value={form.thumbnailFile}
+            autoComplete="on"
             onChange={(e) => setThumbnailFile(e.target.files[0])}
             accept="image/*"
             id="thumbnail"
@@ -112,8 +106,7 @@ function VideoUpload() {
           <input
             type="file"
             name="video"
-            autoComplete="off"
-            value={form.videoFile}
+            autoComplete="on"
             onChange={(e) => setVideoFile(e.target.files[0])}
             accept="video/*"
             id="video"

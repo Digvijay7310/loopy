@@ -61,8 +61,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
         const avatarUpload = await uploadOnCloudinary(avatarPath)
         const coverImageupload = await uploadOnCloudinary(coverImagePath)
 
-        if (!avatarUpload || !coverImageupload) {
-            return next(new apiError(500, "Cloudinary upload failed"))
+        if (!avatarUpload) {
+            return next(new apiError(500, "Cloudinary avatar upload failed"))
+        }
+
+        if(!coverImageupload){
+            return next(new apiError(500, "Cloudinary coverImge upload failed"))
         }
 
         //Create new user
@@ -83,8 +87,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
         // send cookieOption
         const cookieOption = {
             httpOnly: true,
-            secure: process.env.NODE_ENV,
-            sameSite: "Strict"
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax"
         }
 
         res.cookie("accessToken", accessToken, cookieOption)
@@ -121,8 +125,9 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
         const cookieOption = {
             httpOnly: true,
-            secure: process.env.NODE_ENV,
-            sameSite: "Strict"
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000,
         }
 
         res.cookie("accessToken", accessToken, cookieOption)
@@ -143,7 +148,7 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 
         console.log("user ", user)
 
-        return res.status(200).json(new apiResponse(200, user, "User profile fetch"))
+        return res.status(200).json(new apiResponse(201, user, "User profile fetch"))
 
     } catch (error) {
         next(error)

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import axiosInstance from "../axios";
 
 function Register() {
@@ -29,7 +28,11 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setLoading(false);
+    setLoading(true);
+    if(!form.fullName || !form.username || !form.avatar || !form.coverImage || !form.email || !form.password){
+      alert("All fields are required")
+      return
+    }
 
     const formData = new FormData();
     for (const key in form) {
@@ -43,15 +46,19 @@ function Register() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true
       });
 
-      setAuthUser(res.data.data.user);
-      setAccessToken(res.data.data.accessToken);
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${res.data.data.accessToken}`;
+      const {accessToken, refreshToken, user} = res.data.data;
+      setAccessToken(accessToken);
+      setAuthUser(user);
+
+      localStorage.setItem("accessToken", accessToken)
+      localStorage.setItem("refreshToken", refreshToken)  
+      
+      axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       alert("User Register successfully");
-      navigate("/users/");
+      navigate("/users");
     } catch (error) {
       alert(error.response?.data?.message || "Registration failed");
     } finally {

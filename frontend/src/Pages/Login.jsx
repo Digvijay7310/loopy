@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
-  const { setAuthUser, setAccessToken } = useAuth();
+  const { setAuthUser } = useAuth();
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -20,29 +20,32 @@ function Login() {
     setError("");
     setLoading(true);
     try {
-      const res = await axiosInstance.post(
-        "users/login",
+      const res = await axiosInstance.post("users/login", form, {
+         withCredentials: true 
+    });
+       /* console.log("Login response data: ", res.data.data)
 
-        form,
+        const {accessToken, refreshToken, user} = res.data.data;
 
-        { withCredentials: true }
-      );
-      console.log(res.data);
-      setAuthUser(res.data.message.user);
-      setAccessToken(res.data.message.accessToken);
-      axiosInstance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${res.data.message.accessToken}`;
+        if(!accessToken){
+          console.log("accesstoken: ", accessToken)
+        }
 
-      console.log("Login successfull", res.data);
+        if(!refreshToken){
+          console.log("refreshtoken", refreshToken)
+        } */
+       const {user} = res.data.data
+
+      
+      setAuthUser(user);
+      
+      alert("Login successfull")  
+      console.log("Login successfull");
 
       alert("login Successfull");
       navigate("/users");
     } catch (error) {
-      setError(
-        "Login failed, please try again later",
-        error?.response?.data?.message
-      );
+      setError(error?.response?.data?.message || "Login failed, Please try again later");
     } finally {
       setLoading(false);
     }
@@ -75,6 +78,7 @@ function Login() {
             name="email"
             autoComplete="on"
             type="email"
+            value={form.email}
             onChange={handleOnChange}
             placeholder="Enter Email Address"
             required
@@ -94,7 +98,9 @@ function Login() {
               id="password"
               name="password"
               autoComplete="on"
+              value={form.password}
               type={showPassword ? "text" : "password"}
+              
               onChange={handleOnChange}
               placeholder="Enter Password"
               className="w-full text-white px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
