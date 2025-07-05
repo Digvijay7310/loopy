@@ -24,10 +24,12 @@ const uploadOnCloudinary = async (localFilePath) => {
         });
         console.log("file uploaded on cloudinary", response.url)
 
+        //clean up local temp file
         fs.unlinkSync(localFilePath);
 
         return response
     } catch (error) {
+        //cleanup if upload fails
         if (fs.existsSync(localFilePath)) {
             fs.unlinkSync(localFilePath);
         }

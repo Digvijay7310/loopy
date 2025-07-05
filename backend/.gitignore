@@ -3,3 +3,7 @@ node_modules
 
 #Ignore all environment files
 .env
+
+# Ignore all dotfiles except .temp in public
+.*
+!public/.temp

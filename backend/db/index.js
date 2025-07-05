@@ -1,19 +1,22 @@
 import mongoose from 'mongoose'
 import { DB_NAME } from '../constant/constant.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
 const connectDB = async () => {
-    try {
-        console.log("✅ Raw MONGODB_URI:", JSON.stringify(process.env.MONGODB_URI));
+   try {
+        const baseUri = process.env.MONGODB_URI;
+        if (!baseUri) throw new Error("❌ MONGODB_URI is not defined");
 
-        const finalUri = `${process.env.MONGODB_URI}/${DB_NAME}`;
-        console.log("✅ Final URI:", JSON.stringify(finalUri));
+        const finalUri = `${baseUri}/${DB_NAME}`;
+        console.log("✅ Final URI:", finalUri);
 
         const connectionInstance = await mongoose.connect(finalUri);
         console.log("✅ Connected to MongoDB at", connectionInstance.connection.host);
-
     } catch (error) {
         console.log("❌ MongoDB connection error:", error);
+        process.exit(1); // exit if DB connection fails
     }
 };
 
