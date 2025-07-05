@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
@@ -7,6 +8,8 @@ import {
   LiaShareSolid,
 } from "react-icons/lia";
 import PageNotFound from "../Pages/PageNotFound";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 function WatchVideo({ video }) {
   if (!video) return <PageNotFound />;
@@ -14,10 +17,20 @@ function WatchVideo({ video }) {
   const [showDesc, setShowDesc] = useState(false);
   const [like, setLike] = useState(video?.likes?.length || 0);
   const [showComments, setShowComments] = useState(false);
+  const videoRef = useRef()
 
   const toggleDesc = () => setShowDesc((prev) => !prev);
   const toggleComments = () => setShowComments((prev) => !prev);
   const incLike = () => setLike((prev) => prev + 1);
+
+  useEffect(() => {
+    return () => {
+      if(videoRef.current){
+        videoRef.current.pause()
+      }
+    }
+  },[])
+  
 
   return (
     <div className="bg-zinc-900 text-white">
@@ -28,8 +41,8 @@ function WatchVideo({ video }) {
             <div className="rounded-md h-[200px] sm:h-[450px] bg-zinc-800 overflow-hidden flex justify-center items-center">
               <video
                 src={video.videoUrl}
+                poster={video.thumbnail}
                 controls
-                loop
                 className="w-full max-w-[1267px] max-h-[450px] h-full object-contain"
               />
             </div>

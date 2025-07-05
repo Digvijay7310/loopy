@@ -18,7 +18,7 @@ function Video() {
         const res = await axiosInstance.get(`videos/video/${id}`);
         setVideoData(res.data.data);
       } catch (error) {
-        console.error("Failed to fetch");
+        console.error("Failed to fetch", error);
       } finally {
         setLoading(false);
       }
@@ -27,7 +27,7 @@ function Video() {
   }, [id]);
 
   if (loading) return <Loading />;
-  if (!videoData) return <div className="text-white"> Vidoe not found</div>;
+  if (!videoData) return <div className="text-white text-center"> Video not found</div>;
 
   const { video, relatedVideo } = videoData;
   return (

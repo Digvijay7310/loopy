@@ -97,7 +97,7 @@ const watchVideo = asyncHandler(async (req, res, next) => {
         return next(new apiError(404, "Video not found"))
     }
     //update video count when any one watch and save
-    video.views = (video.views || 0) + 1
+    video.views = (video.views + 1) 
     await video.save()
 
     //show related videos apart of watching video
