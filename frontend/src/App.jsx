@@ -22,6 +22,7 @@ import Video from "./Pages/Video";
 import PageNotFound from "./Pages/PageNotFound";
 import Uploading from "./components/Uploading";
 import WatchVideo from "./components/WatchVideo";
+import Loading from "./components/Loading";
 
 function App() {
   return (

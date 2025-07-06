@@ -103,7 +103,7 @@ const watchVideo = asyncHandler(async (req, res, next) => {
     //show related videos apart of watching video
     const relatedVideos = await Video.find({ _id: { $ne: videoId } })
         .limit(5)
-        .select("title thumbanil owner")
+        .select("title thumbnail owner")
         .populate("owner", "username")
 
     if (!relatedVideos) {
