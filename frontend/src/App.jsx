@@ -20,16 +20,26 @@ import HelpCenter from "./Pages/HelpCenter";
 import Terms from "./Pages/Terms";
 import Video from "./Pages/Video";
 import PageNotFound from "./Pages/PageNotFound";
-import Uploading from "./components/Uploading";
-import WatchVideo from "./components/WatchVideo";
-import Loading from "./components/Loading";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AuthLoading from "./components/AuthLoading";
 
 function App() {
   return (
     <>
       <AuthProvider>
         <BrowserRouter>
+        <ToastContainer position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark" />
           <Routes>
+
             {/* <Route path="/" element={<Loading />} /> */}
             <Route path="/users" element={<Layout />}>
               <Route index element={<Home />} />

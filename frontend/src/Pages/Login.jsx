@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import axiosInstance from "../axios.js";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import { useNavigate, Link } from "react-router-dom";
+import axiosInstance from "../axios";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import AuthLoading from "../components/AuthLoading";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
-  const { setAuthUser } = useAuth();
-  const navigate = useNavigate();
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleOnChange = (e) =>
+  const { setAuthUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,118 +24,89 @@ function Login() {
     setLoading(true);
     try {
       const res = await axiosInstance.post("users/login", form, {
-         withCredentials: true 
-    });
-       /* console.log("Login response data: ", res.data.data)
+        withCredentials: true,
+      });
 
-        const {accessToken, refreshToken, user} = res.data.data;
-
-        if(!accessToken){
-          console.log("accesstoken: ", accessToken)
-        }
-
-        if(!refreshToken){
-          console.log("refreshtoken", refreshToken)
-        } */
-       const {user} = res.data.data
-
-      
+      const { user } = res.data.data;
       setAuthUser(user);
-      
-      alert("Login successfull")  
-      console.log("Login successfull");
 
-      alert("login Successfull");
+      toast.success("Login Successful!");
       navigate("/users");
     } catch (error) {
-      setError(error?.response?.data?.message || "Login failed, Please try again later");
+      setError(error?.response?.data?.message || "Login failed.");
     } finally {
       setLoading(false);
     }
   };
+
   return (
-    <main className="min-h-screen flex flex-col items-center bg-zinc-900">
-      <form
-        id="loginForm"
-        onSubmit={handleLogin}
-        className="bg-zinc-800  p-8 rounded-xl shadow-xl w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold text-center text-red-600 mb-6">
-          Welcome back
-        </h1>
-        {error && (
-          <p className="text-red-600 mb-4" aria-live="assertive">
-            {error}
+    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-4">
+      <div className="bg-white/5 border border-white/10 rounded-lg shadow-xl p-6 backdrop-blur-sm w-full max-w-md">
+        <form onSubmit={handleLogin} className="flex flex-col space-y-4">
+          <h2 className="text-3xl font-bold text-center text-red-600">Login</h2>
+          <p className="text-sm text-center text-white">
+            Welcome back! Please enter your credentials.
           </p>
-        )}
-        <div className="mb-4">
-          <label
-            className="block text-white text-xl font-semibold mb-2"
-            htmlFor="email"
-            name="email"
-          >
-            Email:{" "}
-          </label>
-          <input
-            // id="email"
-            name="email"
-            autoComplete="on"
-            type="email"
-            value={form.email}
-            onChange={handleOnChange}
-            placeholder="Enter Email Address"
-            required
-            className="w-full text-white px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
-          />
-          <br />
-          <br />
-          <label
-            htmlFor="password"
-            name="password"
-            className="block text-white text-xl font-semibold mb-2"
-          >
-            Password:
-          </label>
-          <div className="flex items-center">
+
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
+          <div>
+            <label htmlFor="email" className="block text-white mb-1">
+              Email
+            </label>
             <input
-              id="password"
-              name="password"
-              autoComplete="on"
-              value={form.password}
-              type={showPassword ? "text" : "password"}
-              
+              type="email"
+              name="email"
+              value={form.email}
               onChange={handleOnChange}
-              placeholder="Enter Password"
-              className="w-full text-white px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
+              placeholder="Enter your email"
+              required
+              className="w-full px-3 py-2 bg-zinc-900 border border-red-600 rounded text-white focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
+
+          <div>
+            <label htmlFor="password" className="block text-white mb-1">
+              Password
+            </label>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={form.password}
+              onChange={handleOnChange}
+              placeholder="Enter your password"
+              required
+              className="w-full px-3 py-2 bg-zinc-900 border border-red-600 rounded text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-red-400 mt-1 text-sm underline"
+            >
+              {showPassword ? "Hide Password" : "Show Password"}
+            </button>
+          </div>
+
           <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="mt-2 text-red-600"
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 rounded-lg font-semibold transition duration-200 ${
+              loading
+                ? "bg-red-400 cursor-not-allowed"
+                : "bg-red-600 hover:bg-red-500 text-white"
+            }`}
           >
-            {showPassword ? "Hide" : "Show"}
+            {loading ? <div className="h-6 w-6 p-0.5"><AuthLoading/></div> : "Login"}
           </button>
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-2 rounded-lg font-semibold cursor-pointer transition duration-200 ${
-            loading
-              ? "bg-red-400 cursor-not-allowed"
-              : "bg-red-600 hover:bg-red-500 text-white"
-          }`}
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-        <br />
-        <p className="text-white text-sm text-center">
-          Don't have an account ?{" "}
-          <Link className="text-red-600" to="/users/register">
-            Register
-          </Link>{" "}
-        </p>
-      </form>
+
+          <p className="text-white text-sm text-center">
+            Don't have an account?{" "}
+            <Link to="/users/register" className="text-red-500 hover:underline">
+              Register
+            </Link>
+          </p>
+        </form>
+      </div>
     </main>
   );
 }
