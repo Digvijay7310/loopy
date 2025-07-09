@@ -18,11 +18,11 @@ import Faq from "./Pages/Faq";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import HelpCenter from "./Pages/HelpCenter";
 import Terms from "./Pages/Terms";
-import Video from "./Pages/Video";
 import PageNotFound from "./Pages/PageNotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLoading from "./components/AuthLoading";
+import Video from "./Pages/Video";
 
 function App() {
   return (
@@ -58,7 +58,7 @@ function App() {
             </Route>
             {/* Videos Routes */}
             <Route path="/videos" element={<Layout />}>
-              <Route path="video/:id" element={<Video />} />
+              <Route path="video/:id" element={ <Video />} />
               <Route path="upload" element={<VideoUpload />} />
               <Route path="about" element={<About />} />
               <Route path="my-videos" element={<MyVideos />} />

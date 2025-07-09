@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import VideoCard from "../components/VideoCard";
 import axiosInstance from "../axios.js";
-import { useEffect } from "react";
 import Loading from "../components/Loading.jsx";
 
 function Home() {
-  // const videoCards = new Array(12).fill(null); // 12 sample cards
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,9 +14,9 @@ function Home() {
           withCredentials: true,
         });
         setVideos(res.data.data);
-        console.log("fetched videos", res.data.data);
+        console.log("Fetched videos:", res.data.data);
       } catch (error) {
-        console.error("Error in fetching", error);
+        console.error("Error fetching videos:", error);
       } finally {
         setLoading(false);
       }
@@ -28,33 +26,22 @@ function Home() {
   }, []);
 
   return (
-    <main className="bg-zinc-900 min-h-screen text-white">
+    <main className="bg-zinc-900 min-h-screen text-white px-2 sm:px-4 md:px-6 lg:px-10 xl:px-16">
       {loading ? (
         <Loading />
       ) : (
-        <div
-          className="
-          grid
-          grid-cols-2
-          sm:grid-cols-3
-          md:grid-cols-3
-          lg:grid-cols-4
-          py-2
-          overflow-x-auto
-        "
-        >
+        <div className="w-full max-w-screen-2xl mx-auto py-4">
           {videos.length > 0 ? (
-            videos.map((video, idx) => (
-              <VideoCard key={video._id || idx} video={video} />
-            ))
-          ) : (
-            <div className="col-span-full text-center text-lg">
-              No Video Found
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {videos.map((video, idx) => (
+                <VideoCard key={video._id || idx} video={video} />
+              ))}
             </div>
+          ) : (
+            <div className="text-center text-lg py-10">No Videos Found</div>
           )}
         </div>
       )}
-      {/* Trending */}
     </main>
   );
 }
