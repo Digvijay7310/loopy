@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./Layout/Layout";
 import Register from "./Pages/Register";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
@@ -11,7 +12,7 @@ import About from "./Pages/About";
 import Profile from "./Pages/Profile";
 import { AuthProvider } from "./context/AuthContext";
 
-import Layout from "./Layout/Layout";
+
 import UpdateProfile from "./Pages/UpdateProfile";
 import MyVideos from "./Pages/MyVideos";
 import Faq from "./Pages/Faq";
@@ -27,8 +28,7 @@ import Video from "./Pages/Video";
 function App() {
   return (
     <>
-      <AuthProvider>
-        <BrowserRouter>
+     
         <ToastContainer position="top-center"
         autoClose={3000}
         hideProgressBar={false}
@@ -38,35 +38,7 @@ function App() {
         draggable
         pauseOnHover
         theme="dark" />
-          <Routes>
-
-            {/* <Route path="/" element={<Loading />} /> */}
-            <Route path="/users" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="/users/register" element={<Register />} />
-              <Route path="/users/login" element={<Login />} />
-              {/* <Route path="/users/login" element={<Uploading />} /> */}
-              <Route path="/users/logout" element={<Logout />} />
-              <Route path="/users/my-comments" element={<Comments />} />
-              <Route path="/users/my-likes" element={<Likes />} />
-              <Route path="/users/profile" element={<Profile />} />
-              <Route path="/users/update-profile" element={<UpdateProfile />} />
-              <Route path="/users/faq" element={<Faq />} />
-              <Route path="/users/privacy" element={<PrivacyPolicy />} />
-              <Route path="/users/help" element={<HelpCenter />} />
-              <Route path="/users/terms" element={<Terms />} />
-            </Route>
-            {/* Videos Routes */}
-            <Route path="/videos" element={<Layout />}>
-              <Route path="video/:id" element={ <Video />} />
-              <Route path="upload" element={<VideoUpload />} />
-              <Route path="about" element={<About />} />
-              <Route path="my-videos" element={<MyVideos />} />
-            </Route>
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+          
     </>
   );
 }
