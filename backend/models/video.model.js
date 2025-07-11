@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 
+
 const videoSchema = new mongoose.Schema({
     videoUrl: {
         type: String,
@@ -13,6 +14,11 @@ const videoSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxLength: [100, "Title should less than or equal to 100"]
+    },
+    slug: {
+        type: String,
+        unique: true,
+        index: true,
     },
     description: {
         type: String,
@@ -45,4 +51,7 @@ const videoSchema = new mongoose.Schema({
     ]
 }, { timestamps: true })
 
+
+
 export const Video = new mongoose.model("Video", videoSchema)
+

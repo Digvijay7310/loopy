@@ -18,7 +18,7 @@ const refreshToken = asyncHandler(async (req, res) => {
         if (err) return res.status(403).json({ message: "Invalid refresh token" });
 
         const accessToken = jwt.sign(
-            { id: user.id, username: user.username, email: user.email },
+            { id: user.id, username: user.username, email: user.email, role: user.role, isVerified: user.isVerified },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: process.env.ACCESS_TOKEN_EXPIRY } // or whatever expiration you prefer
         );
@@ -156,7 +156,9 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 })
 
 const updateUserProfile = asyncHandler(async (req, res, next) => {
+    console.log("req body ",req.body);
     try {
+
         const { fullName, avatar, coverImage } = req.body
 
         const updateUser = await User.findByIdAndUpdate(
@@ -189,8 +191,8 @@ const logoutUser = asyncHandler(async (req, res) => {
         sameSite: "Strict"
     }
 
-    res.clearCookie('accesstoken', cookieOption)
-    res.clearCookie('refreshtoken', cookieOption)
+    res.clearCookie('accessToken', cookieOption)
+    res.clearCookie('refreshToken', cookieOption)
 
 
     return res.status(201).json(new apiResponse(201, "logout successfull!"))

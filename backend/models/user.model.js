@@ -20,6 +20,7 @@ const userSchema = new Schema({
         unique: true,
         trim: true,
         lowercase: true,
+        match: [/.+\@.+\..+/, "Please enter a valid email address"]
     },
     password: {
         type: String,
@@ -27,16 +28,27 @@ const userSchema = new Schema({
     },
     avatar: {
         type: String,
-        required: true,
+        required: false,
+        default: "default-avatar-url"
     },
     coverImage: {
         type: String,
         required: true,
     },
-    watchHistory: {
+    role: {
+        type: String,
+        required: true,
+        enum: ["user", "admin"],
+        default: "user"
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    watchHistory: [{
         type: Schema.Types.ObjectId,
         ref: "Video"
-    }
+    }]
 }, { timestamps: true })
 
 userSchema.pre("save", async function (next) {
