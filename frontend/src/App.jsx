@@ -7,14 +7,20 @@ import { AuthProvider } from "./context/AuthContext";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import VideoUpload from "./components/VideoUpload";
+import Register from "./Pages/Register";
+import Login from "./Pages/Login";
 import HomePage from "./Pages/HomePage";
-import MyVideosPage from "./Pages/MyVideoPage";
-import UserProfile from "./components/UserProfile";
-import UpdateProfile from "./Pages/UpdateProfile";
 import LogoutPage from "./Pages/LogoutPage";
+import ProfilePage from "./Pages/ProfilePage";
+import VideoUpload from "./Pages/VideoUpload";
+import MyVideosPage from "./Pages/MyVideosPage";
+import WatchVideoPage from "./Pages/WatchVideoPage";
+import MyCommentsPage from "./Pages/MyCommentsPage";
+import MyLikesPage from "./Pages/MyLikesPage";
+import DeleteAVideoPage from "./Pages/DeleteAVideoPage";
+import DeleteAllVideoPage from "./Pages/DeleteAllVideoPage";
+import PageNotFound from "./Pages/PageNotFound";
+import UpdateProfilePage from "./Pages/UpdateProfilePage";
 
 
 function App() {
@@ -30,15 +36,24 @@ function App() {
         draggable
         pauseOnHover
         theme="dark" />
+    
+      <Routes>
+        <Route path="/users" element={<HomePage/> } />
+        <Route path="/users/register" element={<Register/> } />
+        <Route path="/users/login" element={<Login />} />
+        <Route path="/users/profile" element={<ProfilePage/>} />
+        <Route path="/users/update-profile" element={<UpdateProfilePage/>} />
+        <Route path="/users/logout" element={<LogoutPage/>} />
+        <Route path="/videos/upload" element={<VideoUpload/>}  />
+        <Route path="/videos/my-videos" element={<MyVideosPage/>} />
+        <Route path="/videos/video/:videoId" element={<WatchVideoPage/>} />
+        <Route path="/videos/my-comments-videos" element={<MyCommentsPage/>} />
+        <Route path="/videos/my-likes-videos" element={<MyLikesPage/>} />
+        <Route path="/videos/delete-my-video/:videoId" element={<DeleteAVideoPage/>} />
+        <Route path="/videos/delete-all-videos" element={<DeleteAllVideoPage/>} />
+        <Route path="*" element={<PageNotFound/>} />
 
-    {/* <Register/> */}
-    {/* <Login />
-    <VideoUpload /> */}
-          {/* <HomePage /> */}
-          {/* <MyVideosPage/> */}
-          {/* <UserProfile /> */}
-          {/* <UpdateProfile/> */}
-          <LogoutPage />
+      </Routes>
     </>
   );
 }

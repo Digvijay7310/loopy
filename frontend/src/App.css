@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+/* Container for all videos grid */
+.videos-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 column default */
+  gap: 1.5rem; /* same as gap-6 */
+  padding: 0 1rem; /* padding left/right like px-4 */
+  max-width: 112rem; /* max-w-7xl approx */
+  margin: 2rem auto 0 auto; /* top margin, centered */
+}
+
+/* Medium screens (tablets) - 2 columns */
+@media (min-width: 768px) {
+  .videos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Large screens (laptops and above) - 3 columns */
+@media (min-width: 1024px) {
+  .videos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #18181b;
+  border: 1px solid #3f3f46;
+  color: white;
+  border-radius: 0.375rem;
+  outline: none;
+}
+
+.input-field:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+

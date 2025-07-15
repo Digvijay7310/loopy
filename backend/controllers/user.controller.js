@@ -156,32 +156,39 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 })
 
 const updateUserProfile = asyncHandler(async (req, res, next) => {
-    console.log("req body ",req.body);
-    try {
+  try {
+    const { fullName } = req.body;
+    const avatarFile = req.files?.avatar?.[0];
+    const coverImageFile = req.files?.coverImage?.[0];
 
-        const { fullName, avatar, coverImage } = req.body
+    const user = await User.findById(req.user);
+    if (!user) return next(new apiError(404, "User not found"));
 
-        const updateUser = await User.findByIdAndUpdate(
-            req.user,
-            {
-                $set: {
-                    ...(fullName && { fullName }),
-                    ...(avatar && { avatar }),
-                    ...(coverImage && { coverImage }),
-                }
-            },
-            { new: true, runValidators: true }
-        ).select("-password")
+    if (fullName) user.fullName = fullName;
 
-        // if user is not updated by any reasons send an error
-        if (!updateUser) return next(new apiError(404, "User not found"))
-        console.log("Updated user ", updateUser)
-
-        return res.status(200).json(new apiResponse(200, updateUser, "User profile updated"))
-    } catch (error) {
-        next(error)
+    if (avatarFile) {
+      const avatarUpload = await uploadOnCloudinary(avatarFile.path);
+      if (!avatarUpload?.secure_url) return next(new apiError(500, "Avatar upload failed"));
+      user.avatar = avatarUpload.secure_url;
     }
-})
+
+    if (coverImageFile) {
+      const coverImageUpload = await uploadOnCloudinary(coverImageFile.path);
+      if (!coverImageUpload?.secure_url) return next(new apiError(500, "Cover image upload failed"));
+      user.coverImage = coverImageUpload.secure_url;
+    }
+
+    await user.save();
+
+    return res.status(200).json(
+      new apiResponse(200, user, "User profile updated")
+    );
+  } catch (error) {
+    console.error("❌ Error in updateUserProfile:", error);
+    return next(error);
+  }
+});
+
 
 
 const logoutUser = asyncHandler(async (req, res) => {
