@@ -87,7 +87,7 @@ function WatchVideoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white px-4 py-6 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-black text-white px-4 py-6 w-full mx-auto">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Main Video & Info */}
         <div className="flex-1">
@@ -259,16 +259,7 @@ function WatchVideoPage() {
         </aside>
       </div>
 
-      {/* Loader styles */}
-      <style>{`
-        .loader {
-          border-top-color: #f87171;
-          animation: spinner 1s linear infinite;
-        }
-        @keyframes spinner {
-          to {transform: rotate(360deg);}
-        }
-      `}</style>
+      
     </div>
   );
 }

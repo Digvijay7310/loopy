@@ -24,13 +24,12 @@ const Navbar = () => {
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-3 md:px-8">
         {/* Logo */}
-        <Link
-          to="/"
+        <a
+          href="/"
           className="text-2xl font-bold text-red-500 flex items-center gap-1"
         >
-          Loo
-          <span className="bg-red-500 text-white px-2 rounded-full">py</span>
-        </Link>
+         <img src="./public/logo.svg" alt="logo" className="h-10 md:h-[40px]"  />
+        </a>
 
         {/* Search bar */}
         <form className="hidden sm:flex flex-1 mx-4 max-w-md">

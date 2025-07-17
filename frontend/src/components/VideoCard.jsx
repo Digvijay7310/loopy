@@ -20,7 +20,7 @@ function VideoCard({ video }) {
 
   return (
     <div
-      className="bg-zinc-950 group w-full lg:max-w-[600px]"
+      className="bg-zinc-900 group w-full lg:max-w-[600px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -64,12 +64,7 @@ function VideoCard({ video }) {
               {video.owner?.username} &nbsp;•&nbsp; {video.views.toLocaleString()} views
             </p>
           </div>
-          {/* Move share button outside Link to prevent navigation */}
-        </div>
-      </Link>
-
-      {/* Share button outside Link to avoid navigation */}
-      <button
+          <button
         onClick={() => {
           navigator.clipboard.writeText(window.location.origin + `/videos/video/${video._id}`);
           alert("Video URL copied to clipboard!");
@@ -79,6 +74,13 @@ function VideoCard({ video }) {
       >
         <FaShare/>
       </button>
+          {/* Move share button outside Link to prevent navigation */}
+        </div>
+        
+      </Link>
+
+      {/* Share button outside Link to avoid navigation */}
+      
     </div>
   );
 }
