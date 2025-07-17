@@ -13,7 +13,8 @@ function WatchVideoPage() {
   const [likesCount, setLikesCount] = useState(0);
   const [likedByUser, setLikedByUser] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [subscribed, setSubscribed] = useState(false); // Example stub
+  const [videoLoading, setVideoLoading] = useState(true);
+  const [subscribed, setSubscribed] = useState(false);
 
   useEffect(() => {
     const fetchVideoData = async () => {
@@ -22,8 +23,7 @@ function WatchVideoPage() {
           withCredentials: true,
         });
 
-        const { video, relatedVideos, comments, likesCount, likeByUser } =
-          res.data.data;
+        const { video, relatedVideos, comments, likesCount, likeByUser } = res.data.data;
 
         setVideoData(video);
         setRelatedVideos(relatedVideos);
@@ -42,10 +42,9 @@ function WatchVideoPage() {
     fetchVideoData();
   }, [videoId, navigate]);
 
-  // Like toggle function (stub — you can build out API call)
+  // Like toggle function (stub — replace with API call)
   const toggleLike = async () => {
     try {
-      // TODO: implement like/unlike API call here
       if (likedByUser) {
         setLikesCount((c) => c - 1);
       } else {
@@ -57,11 +56,12 @@ function WatchVideoPage() {
     }
   };
 
-  // Subscribe toggle (stub)
+  // Subscribe toggle with toast fixed to show correct message
   const toggleSubscribe = () => {
-    // TODO: connect with subscription API
-    setSubscribed((prev) => !prev);
-    toast.info(subscribed ? "Unsubscribed" : "Subscribed");
+    setSubscribed((prev) => {
+      toast.info(prev ? "Unsubscribed" : "Subscribed");
+      return !prev;
+    });
   };
 
   // Share button copies URL
@@ -91,11 +91,22 @@ function WatchVideoPage() {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Main Video & Info */}
         <div className="flex-1">
-          <div className="w-full aspect-video bg-black rounded-md overflow-hidden shadow-lg mb-4">
+          <div className="w-full aspect-video bg-black rounded-md overflow-hidden shadow-lg mb-4 relative">
+            {videoLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 z-10">
+                <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
+              </div>
+            )}
             <video
               src={videoData.videoUrl}
               controls
               autoPlay
+              onLoadStart={() => setVideoLoading(true)}
+              onCanPlay={() => setVideoLoading(false)}
+              onError={() => {
+                setVideoLoading(false);
+                toast.error("Failed to load video");
+              }}
               className="w-full h-full object-cover bg-black"
             />
           </div>
@@ -122,6 +133,7 @@ function WatchVideoPage() {
                   likedByUser ? "bg-red-600" : "bg-gray-800 hover:bg-gray-700"
                 } transition-colors`}
                 aria-label="Like video"
+                aria-pressed={likedByUser}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -130,11 +142,12 @@ function WatchVideoPage() {
                   stroke="currentColor"
                   className="w-5 h-5"
                 >
+                  {/* Thumbs up icon */}
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M5 15l7-7 7 7"
+                    d="M14 9l-4 4m0 0l-4-4m4 4V3"
                   />
                 </svg>
                 {likesCount}
@@ -159,12 +172,7 @@ function WatchVideoPage() {
                     strokeWidth={2}
                     d="M15 8a3 3 0 00-6 0v1m6-1v7a3 3 0 11-6 0v-1"
                   />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 12h.01"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12h.01" />
                 </svg>
                 Share
               </button>
@@ -176,6 +184,7 @@ function WatchVideoPage() {
                   subscribed ? "bg-red-600" : "bg-gray-800 hover:bg-gray-700"
                 } transition-colors`}
                 aria-label="Subscribe to owner"
+                aria-pressed={subscribed}
               >
                 {subscribed ? "Subscribed" : "Subscribe"}
               </button>
@@ -183,9 +192,7 @@ function WatchVideoPage() {
           </div>
 
           {/* Description */}
-          <p className="bg-gray-900 p-4 rounded-md whitespace-pre-line mb-6">
-            {videoData.description}
-          </p>
+          <p className="bg-gray-900 p-4 rounded-md whitespace-pre-line mb-6">{videoData.description}</p>
 
           {/* Comments */}
           <div>
@@ -200,8 +207,9 @@ function WatchVideoPage() {
                     className="bg-gray-900 p-3 rounded flex items-start gap-3"
                   >
                     <img
-                      src={comment.commentBy.avatar}
+                      src={comment.commentBy.avatar || "/default-avatar.png"}
                       alt={comment.commentBy.username}
+                      onError={(e) => (e.target.src = "/default-avatar.png")}
                       className="w-10 h-10 rounded-full object-cover"
                     />
                     <div>
@@ -220,9 +228,7 @@ function WatchVideoPage() {
 
         {/* Suggested Videos */}
         <aside className="w-full lg:w-96">
-          <h3 className="text-xl font-semibold mb-4 text-red-500">
-            Suggested Videos
-          </h3>
+          <h3 className="text-xl font-semibold mb-4 text-red-500">Suggested Videos</h3>
           {relatedVideos.length === 0 ? (
             <p className="text-gray-400">No suggestions available.</p>
           ) : (
@@ -231,7 +237,11 @@ function WatchVideoPage() {
                 <div
                   key={vid._id}
                   onClick={() => navigate(`/videos/video/${vid._id}`)}
-                  className="cursor-pointer flex gap-3"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && navigate(`/videos/video/${vid._id}`)}
+                  className="cursor-pointer flex gap-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  role="button"
+                  aria-label={`Watch ${vid.title}`}
                 >
                   <img
                     src={vid.thumbnail}
@@ -248,6 +258,17 @@ function WatchVideoPage() {
           )}
         </aside>
       </div>
+
+      {/* Loader styles */}
+      <style>{`
+        .loader {
+          border-top-color: #f87171;
+          animation: spinner 1s linear infinite;
+        }
+        @keyframes spinner {
+          to {transform: rotate(360deg);}
+        }
+      `}</style>
     </div>
   );
 }

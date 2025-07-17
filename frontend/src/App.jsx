@@ -21,6 +21,8 @@ import DeleteAVideoPage from "./Pages/DeleteAVideoPage";
 import DeleteAllVideoPage from "./Pages/DeleteAllVideoPage";
 import PageNotFound from "./Pages/PageNotFound";
 import UpdateProfilePage from "./Pages/UpdateProfilePage";
+import RoutePage from "./Pages/RoutePage";
+import Layout from "./Layout/Layout";
 
 
 function App() {
@@ -35,9 +37,12 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark" />
+        theme="light" />
     
-      <Routes>
+      <Routes >
+        
+        <Route element={<Layout/>}>
+        <Route path="/" element={<RoutePage />} />
         <Route path="/users" element={<HomePage/> } />
         <Route path="/users/register" element={<Register/> } />
         <Route path="/users/login" element={<Login />} />
@@ -51,7 +56,10 @@ function App() {
         <Route path="/videos/my-likes-videos" element={<MyLikesPage/>} />
         <Route path="/videos/delete-my-video/:videoId" element={<DeleteAVideoPage/>} />
         <Route path="/videos/delete-all-videos" element={<DeleteAllVideoPage/>} />
+        </Route>
         <Route path="*" element={<PageNotFound/>} />
+
+      
 
       </Routes>
     </>

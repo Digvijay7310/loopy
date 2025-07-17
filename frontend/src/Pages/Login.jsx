@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function Login() {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    AOS.init({ duration: 800, once: true });
+  }, []);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -23,12 +24,10 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const res = await axiosInstance.post("/users/login", formData, {
+      await axiosInstance.post("/users/login", formData, {
         withCredentials: true,
       });
-
       toast.success("Logged in successfully!");
       navigate("/users/profile");
     } catch (error) {
@@ -40,46 +39,51 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4 text-white">
+    <div className="min-h-screen flex items-center justify-center bg-black px-4 py-12 text-white">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-zinc-900 p-8 rounded-lg border border-red-600 shadow-xl"
+        data-aos="fade-up"
       >
         <h2 className="text-3xl font-bold text-center text-red-500 mb-6">
           Login to Loopy
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div className="flex flex-col">
-            <label htmlFor="email">Email: </label>
+            <label htmlFor="email" className="text-sm mb-1">
+              Email
+            </label>
             <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="input-field"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              className="bg-zinc-800 border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-         <div className="flex flex-col">
-          <label htmlFor="password">Password:</label>
-           <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="input-field"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-         </div>
+          <div className="flex flex-col">
+            <label htmlFor="password" className="text-sm mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              className="bg-zinc-800 border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-red-600 hover:bg-red-700 transition-colors duration-300 font-semibold py-2 rounded"
+            className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors duration-300 font-semibold py-2 rounded"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

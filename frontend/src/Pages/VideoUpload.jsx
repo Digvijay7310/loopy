@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "../axios";
 
 function VideoUpload() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,15 +16,34 @@ function VideoUpload() {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Clean up previews to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (videoPreview) URL.revokeObjectURL(videoPreview);
+      if (thumbnailPreview) URL.revokeObjectURL(thumbnailPreview);
+    };
+  }, [videoPreview, thumbnailPreview]);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (files) {
+    if (files && files.length > 0) {
       const file = files[0];
+
+      // Basic file size check
+      if (name === "videoUrl" && file.size > 50 * 1024 * 1024) {
+        return toast.error("Video must be under 50MB");
+      }
+
+      if (name === "thumbnail" && file.size > 5 * 1024 * 1024) {
+        return toast.error("Thumbnail must be under 5MB");
+      }
+
       setFormData((prev) => ({ ...prev, [name]: file }));
 
-      if (name === "videoUrl") setVideoPreview(URL.createObjectURL(file));
-      if (name === "thumbnail") setThumbnailPreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      if (name === "videoUrl") setVideoPreview(previewUrl);
+      if (name === "thumbnail") setThumbnailPreview(previewUrl);
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -90,9 +108,11 @@ function VideoUpload() {
           required
         />
 
+        {/* Thumbnail */}
         <div className="space-y-2">
-          <label className="text-gray-400">Thumbnail Image:</label>
+          <label htmlFor="thumbnail" className="text-gray-400">Thumbnail Image:</label>
           <input
+            id="thumbnail"
             type="file"
             name="thumbnail"
             accept="image/*"
@@ -109,9 +129,11 @@ function VideoUpload() {
           )}
         </div>
 
+        {/* Video File */}
         <div className="space-y-2">
-          <label className="text-gray-400">Video File (MP4/WebM):</label>
+          <label htmlFor="videoUrl" className="text-gray-400">Video File (MP4/WebM):</label>
           <input
+            id="videoUrl"
             type="file"
             name="videoUrl"
             accept="video/*"
@@ -128,10 +150,11 @@ function VideoUpload() {
           )}
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-red-600 hover:bg-red-700 font-semibold rounded transition-colors duration-300"
+          className="w-full py-2 bg-red-600 hover:bg-red-700 font-semibold rounded transition-colors duration-300 disabled:opacity-50"
         >
           {loading ? "Uploading..." : "Upload Video"}
         </button>
