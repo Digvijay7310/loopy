@@ -1,114 +1,120 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  FaBars,
-  FaTimes,
-  FaUpload,
-  FaSearch,
-  FaHome,
-  FaThumbsUp,
-  FaHistory,
-  FaAddressBook,
-} from "react-icons/fa";
-import { AiFillMessage, AiFillCustomerService } from "react-icons/ai";
-import { MdWatchLater } from "react-icons/md";
-import { LuLogOut } from "react-icons/lu";
+import React from 'react'
+import { FaSearch } from 'react-icons/fa'
+import { LuArrowRightLeft, LuFileVideo, LuHouse, LuLogOut, LuMenu, LuThumbsUp, LuUpload, LuUser } from 'react-icons/lu'
+import {  LiaComments } from 'react-icons/lia'
+import { RxCross1 } from "react-icons/rx";
+import { Link } from 'react-router-dom'
+import AOS from "aos"
+import "aos/dist/aos.css"
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { useRef } from 'react'
 
-const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+function Navbar() {
+  useEffect(()=> {
+    AOS.init({duration:700, once:true,})
+  }, [])
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const menuToggle = () => {
+    setIsOpen(prev => !prev);
+  }
+
+  const menuRef = useRef(null)
+
+  // Menu click outside
+
+  useEffect(()=> {
+    const handleClickOutSide =(e)=> {
+      if(menuRef.current && !menuRef.current.contains(e.target)){
+        setIsOpen(false)
+      }
+    };
+
+    if(isOpen){
+      document.addEventListener('mousedown', handleClickOutSide)
+    } else {
+      document.addEventListener('mousedown', handleClickOutSide)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutSide)
+    }
+  }, [isOpen])
   return (
-    <header className="bg-zinc-950 text-white w-full sticky top-0 z-50 shadow-md">
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-4 py-3 md:px-8">
-        {/* Logo */}
-        <a
-          href="/"
-          className="text-2xl font-bold text-red-500 flex items-center gap-1"
-        >
-         <img src="./public/logo.svg" alt="logo" className="h-10 md:h-[40px]"  />
-        </a>
+    <>
+    <header data-aos="slide-down" className='bg-black px-1 py-2 flex justify-evenly items-center top-0 left-0 fixed w-full z-50' role='banner'>
+      {/* logo */}
+      <Link to="/">
+        <img src="/logo.png" alt="logo" className='h-10 sm:h-[60px]' />
+      </Link>
 
-        {/* Search bar */}
-        <form className="hidden sm:flex flex-1 mx-4 max-w-md">
-          <input
-            type="text"
-            placeholder="Search"
-            className="flex-1 px-3 py-1 bg-zinc-700 text-white rounded-l focus:outline-none focus:ring-1 focus:ring-red-500"
-          />
-          <button className="bg-red-500 px-4 py-1 rounded-r hover:bg-red-600">
-            <FaSearch />
+      {/* Search bar */}
+      <form className="flex shadow-sm shadow-zinc-100" role='search' area-label='Site Search'>
+        <label htmlFor="search" className='sr-only'>Search</label>
+        <input type="search" name="search" id="search"
+        placeholder='Search here'
+        className='cursor-context-menu rounded p-1 text-white
+         bg-zinc-900 outline-0 border-0 ring ring-red-600
+         sm:w-[380px] sm: h-10'
+        />
+        <button className='bg-red-500 text-white font-light sm:w-[30px]'>
+          <FaSearch size={15} className='sm:size-5 font-extralight'/>
           </button>
-        </form>
+      </form>
 
-        {/* Right actions */}
-        <div className="flex items-center space-x-4">
-          {/* Upload - icon only on mobile */}
-          <Link
-            to="/videos/upload"
-            className="text-white hover:text-red-500 hidden sm:inline-flex"
-            title="Upload"
-          >
-            <FaUpload className="text-xl" />
-          </Link>
+      {/* Navbar */}
+      <nav className='flex justify-between items-center sm:gap-6'
+      role='navigation' aria-label='Main navigation'>
 
-          {/* Mobile search icon */}
-          <button className="text-white sm:hidden hover:text-red-500">
-            <FaSearch className="text-xl" />
-          </button>
+          <Link to="/users/profile">
+          <button className='bg-zinc-900 px-0.5 py-1.5 cursor-pointer text-white rounded-full'
+          aria-label='Go to Profile'>
+            <LuUser size={20} className='sm:size-8'/>
+            </button>
+            </Link>
 
-          {/* Hamburger menu */}
-          <button
-            onClick={toggleMenu}
-            className="text-white text-2xl md:hidden focus:outline-none"
-          >
-            {menuOpen ? <FaTimes /> : <FaBars />}
-          </button>
+           {/* MEnu toggle */}
+            <button onClick={menuToggle} className='text-white cursor-pointer' 
+            aria-label='toggle menu' aria-expanded={isOpen} >{
+              isOpen ? <RxCross1 size={20} className='sm:size-8'/> : <LuMenu size={20} className='sm:size-8' />} </button>
+
+              
+      </nav>
+
+    </header>
+
+    {/* Animation slide value */}
+
+     <div
+        ref={menuRef}
+        className={`transition-all duration-300 ease-in-out fixed top-[50px] right-0 w-auto bg-black text-white z-40 overflow-hidden 
+        ${isOpen ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0 pointer-events-none'}
+        `}
+      >
+        <div className='flex flex-col p-4'>
+          <Link to="/users" className='py-2 hover:text-red-500'>
+           <button className='flex justify-between items-center gap-2 text-lg'><LuHouse /> Home </button></Link>
+          <Link to="/users/profile" className='py-2 hover:text-red-500'>
+           <button className='flex justify-between items-center gap-2 text-lg'><LuUser/> Profile </button></Link>
+          <Link to="/videos/upload" className='py-2 hover:text-red-500'>
+           <button className='flex justify-between items-center gap-2 text-lg'><LuUpload/> Upload </button></Link>
+          <Link to="/videos/my-likes" className='py-2 hover:text-red-500'>
+           <button className='flex justify-between items-center gap-2 text-lg'><LuThumbsUp/> My Likes </button></Link>
+          <Link to="/videos/my-comments" className='py-2 hover:text-red-500' >
+           <button className='flex justify-between items-center gap-2 text-lg'><LiaComments/> My Comments </button></Link>
+          <Link to="/videos/my-videos" className='py-2 hover:text-red-500'>
+           <button className='flex justify-between items-center gap-2 text-lg'><LuFileVideo/> My Videos </button></Link>
+          <Link to="/users/logout" className='py-2 hover:text-red-500'>
+           <button className='flex justify-between items-center gap-2 text-lg'><LuLogOut/> Logout </button></Link>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden bg-zinc-900 transition-transform duration-300 ${
-          menuOpen ? "max-h-[600px] py-4" : "max-h-0 overflow-hidden"
-        }`}
-      >
-        <nav className="flex flex-col space-y-3 px-4">
-          <Link to="/" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <FaHome /> Home
-          </Link>
-          <Link to="/videos/upload" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <FaUpload /> Upload
-          </Link>
-          <Link to="/videos/my-likes-videos" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <FaThumbsUp /> Likes
-          </Link>
-          <Link to="/videos/my-comments-videos" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <AiFillMessage /> Comments
-          </Link>
-          <Link to="/videos/my-videos" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <MdWatchLater /> My Videos
-          </Link>
-          <Link to="/videos/delete-all-videos" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <FaHistory /> Delete All
-          </Link>
-          <Link to="/users/profile" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <FaAddressBook /> Profile
-          </Link>
-          <Link to="/users/contact" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <AiFillCustomerService /> Contact
-          </Link>
-          <Link to="/users/logout" onClick={toggleMenu} className="flex items-center gap-2 hover:text-red-500">
-            <LuLogOut /> Logout
-          </Link>
-        </nav>
-      </div>
+      {/* Spacer */}
+      <div className='h-[55px]'></div>
+    </>
+  )
+}
 
-      {/* Desktop menu (optional side nav can go here) */}
-    </header>
-  );
-};
-
-export default Navbar;
+export default Navbar
