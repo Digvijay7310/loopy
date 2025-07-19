@@ -51,15 +51,15 @@ function Navbar() {
       </Link>
 
       {/* Search bar */}
-      <form className="flex shadow-sm shadow-zinc-100" role='search' area-label='Site Search'>
+      <form className="flex" role='search' area-label='Site Search'>
         <label htmlFor="search" className='sr-only'>Search</label>
         <input type="search" name="search" id="search"
         placeholder='Search here'
         className='cursor-context-menu rounded p-1 text-white
-         bg-zinc-900 outline-0 border-0 ring ring-red-600
-         sm:w-[380px] sm: h-10'
+         bg-zinc-900 outline-0 border-0  w-[200px]
+         sm:w-[376px] sm:h-10 rounded-l-lg'
         />
-        <button className='bg-red-500 text-white font-light sm:w-[30px]'>
+        <button className='bg-red-500 text-white border-0 outline-0 font-light w-6 h-10 sm:w-[30px] flex justify-center items-center rounded-r-lg'>
           <FaSearch size={15} className='sm:size-5 font-extralight'/>
           </button>
       </form>
@@ -75,7 +75,7 @@ function Navbar() {
             </button>
             </Link>
 
-           {/* MEnu toggle */}
+           {/* Menu toggle */}
             <button onClick={menuToggle} className='text-white cursor-pointer' 
             aria-label='toggle menu' aria-expanded={isOpen} >{
               isOpen ? <RxCross1 size={20} className='sm:size-8'/> : <LuMenu size={20} className='sm:size-8' />} </button>
@@ -89,7 +89,7 @@ function Navbar() {
 
      <div
         ref={menuRef}
-        className={`transition-all duration-300 ease-in-out fixed top-[50px] right-0 w-auto bg-black text-white z-40 overflow-hidden 
+        className={`transition-all duration-300 ease-in-out fixed top-[60px] right-0 w-[300px] bg-black text-white z-40 overflow-hidden 
         ${isOpen ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0 pointer-events-none'}
         `}
       >

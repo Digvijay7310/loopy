@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { LuEye, LuEyeOff } from "react-icons/lu";
+import LoginLoading from "../components/LoginLoading";
 
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [seePassword, setSeePassword] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -20,6 +23,10 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const togglePassword = () => {
+    setSeePassword(prev => !prev);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +45,8 @@ function Login() {
     }
   };
 
+  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4 py-12 text-white">
       <form
@@ -54,7 +63,8 @@ function Login() {
             <label htmlFor="email" className="text-sm mb-1">
               Email
             </label>
-            <input
+          
+              <input
               type="email"
               name="email"
               placeholder="Enter your email"
@@ -63,37 +73,43 @@ function Login() {
               onChange={handleChange}
               required
             />
-          </div>
+            </div>
+          
 
           <div className="flex flex-col">
             <label htmlFor="password" className="text-sm mb-1">
               Password
             </label>
-            <input
-              type="password"
+            
+              <input
+              type={seePassword ? "text" : "password"}               
               name="password"
               placeholder="Enter your password"
-              className="bg-zinc-800 border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="bg-zinc-800 relative border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
               value={formData.password}
               onChange={handleChange}
               required
             />
-          </div>
+            <button
+            className="relative"
+            onClick={togglePassword}>{seePassword? <LuEye/> : <LuEyeOff /> }</button>
+            </div>
+          
 
           <button
             type="submit"
             disabled={loading}
             className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors duration-300 font-semibold py-2 rounded"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <LoginLoading/> : "Login"}
           </button>
         </div>
 
         <p className="mt-6 text-sm text-center text-gray-400">
           Don’t have an account?{" "}
-          <a href="/users/register" className="text-red-500 hover:underline">
+          <Link to="/users/register" className="text-red-500 hover:underline">
             Register
-          </a>
+          </Link>
         </p>
       </form>
     </div>

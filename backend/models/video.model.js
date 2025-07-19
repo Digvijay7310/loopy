@@ -15,11 +15,6 @@ const videoSchema = new mongoose.Schema({
         required: true,
         maxLength: [100, "Title should less than or equal to 100"]
     },
-    slug: {
-        type: String,
-        unique: true,
-        index: true,
-    },
     description: {
         type: String,
         required: true,
