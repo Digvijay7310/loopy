@@ -30,6 +30,7 @@ const videoSchema = new mongoose.Schema({
     },
     isPublish: {
         type: String,
+        enum: ["public", "private"],
         default: "public",
     },
     comments: [

@@ -61,7 +61,7 @@ function VideoCard({ video }) {
               {video.title}
             </h3>
             <p className="text-gray-400 text-xs mt-1 truncate">
-              {video.owner?.username} &nbsp;•&nbsp; {video.views.toLocaleString()} views
+              {video.owner?.username} &nbsp; &nbsp; {video.views.toLocaleString()} views
             </p>
           </div>
           <button

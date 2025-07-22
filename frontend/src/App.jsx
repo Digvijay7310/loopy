@@ -1,7 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import { AuthProvider } from "./context/AuthContext";
+import { Route, Routes } from "react-router-dom";
 
 
 
@@ -29,21 +27,31 @@ function App() {
   return (
     <>
      
-        <ToastContainer position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light" />
+         <ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="dark"
+  toastStyle={{
+    backgroundColor: "#1e1e1e",
+    color: "#ffffff",
+    fontSize: "14px",
+    borderRadius: "8px",
+  }}
+/>
+
     
       <Routes >
         
         <Route element={<Layout/>}>
         <Route path="/" element={<RoutePage />} />
-        <Route path="/users" element={<HomePage/> } />
+        <Route path="/users" index element={<HomePage/> } />
         <Route path="/users/register" element={<Register/> } />
         <Route path="/users/login" element={<Login />} />
         <Route path="/users/profile" element={<ProfilePage/>} />

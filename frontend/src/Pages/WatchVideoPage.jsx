@@ -3,8 +3,39 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios";
 import { toast } from "react-toastify";
 import LoginLoading from "../components/LoginLoading";
-import { LiaComments } from "react-icons/lia";
-import { LuShare2, LuThumbsUp } from "react-icons/lu";
+import { LiaComment, LiaComments } from "react-icons/lia";
+import { LuShare2, LuThumbsUp, LuSend, LuBookOpen, LuBookCheck } from "react-icons/lu";
+import { FaCommentAlt } from "react-icons/fa";
+
+function CommentInput({ value, onChange, onSubmit, disabled }) {
+  return (
+    <div className="flex items-center gap-2 mb-6">
+      <textarea
+        className="flex-1 p-2 rounded-md bg-gray-800 text-white resize-none"
+        rows={1}
+        placeholder="Add a comment..."
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
+      />
+      <button
+        onClick={onSubmit}
+        disabled={disabled || !value.trim()}
+        className="p-2 rounded bg-red-600 hover:bg-red-700 disabled:opacity-50 flex items-center justify-center"
+        aria-label="Post Comment"
+        title="Post Comment"
+      >
+        <LuSend size={20} />
+      </button>
+    </div>
+  );
+}
 
 function WatchVideoPage() {
   const { videoId } = useParams();
@@ -18,6 +49,10 @@ function WatchVideoPage() {
   const [loading, setLoading] = useState(true);
   const [videoLoading, setVideoLoading] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [postingComment, setPostingComment] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
+  const [showComments, setShowComments] = useState(true);
 
   useEffect(() => {
     const fetchVideoData = async () => {
@@ -26,7 +61,8 @@ function WatchVideoPage() {
           withCredentials: true,
         });
 
-        const { video, relatedVideos, comments, likesCount, likeByUser } = res.data.data;
+        const { video, relatedVideos, comments, likesCount, likeByUser } =
+          res.data.data;
 
         setVideoData(video);
         setRelatedVideos(relatedVideos);
@@ -49,16 +85,36 @@ function WatchVideoPage() {
     try {
       setLikedByUser((prev) => !prev);
       setLikesCount((prev) => (likedByUser ? prev - 1 : prev + 1));
+      await axiosInstance.post(`/videos/video/${videoId}/like`, null, {
+        withCredentials: true,
+      });
     } catch {
+      setLikedByUser((prev) => !prev);
+      setLikesCount((prev) => (likedByUser ? prev + 1 : prev - 1));
       toast.error("Failed to update like");
     }
   };
 
-  const toggleSubscribe = () => {
-    setSubscribed((prev) => {
-      toast.info(prev ? "Unsubscribed" : "Subscribed");
-      return !prev;
-    });
+  const postComment = async () => {
+    if (!newComment.trim()) {
+      toast.warn("Comment cannot be empty");
+      return;
+    }
+    setPostingComment(true);
+    try {
+      const res = await axiosInstance.post(
+        `/videos/video/${videoId}/comment`,
+        { text: newComment.trim() },
+        { withCredentials: true }
+      );
+      setComments((prev) => [res.data.data, ...prev]);
+      setNewComment("");
+      toast.success("Comment posted");
+    } catch {
+      toast.error("Failed to post comment");
+    } finally {
+      setPostingComment(false);
+    }
   };
 
   const handleShare = () => {
@@ -117,24 +173,23 @@ function WatchVideoPage() {
               className="w-10 h-10 rounded-full object-cover"
             />
             <div className="flex-1">
-              <p className="font-semibold">{videoData.owner?.username}</p>
-              <p className="text-sm text-gray-400">Channel</p>
+              <p className="font-semibold text-xl">{videoData.owner?.username}</p>
             </div>
             <button
-              onClick={toggleSubscribe}
-              className={`px-4 py-1 rounded ${
-                subscribed ? "bg-red-600" : "bg-gray-800 hover:bg-gray-700"
-              } transition-colors`}
+              className="ml-auto px-4 py-1 bg-gray-800 hover:bg-gray-700 rounded transition"
+              onClick={() =>
+                toast.info(subscribed ? "Unsubscribed" : "Subscribed")
+              }
             >
               {subscribed ? "Subscribed" : "Subscribe"}
             </button>
           </div>
 
+          {/* Stats & Actions */}
           <div className="flex items-center justify-between text-gray-400 mb-4">
             <div>
-              <span>{videoData.views.toLocaleString()} views</span>{" "}
+              <span>{videoData.views.toLocaleString()} views</span> •{" "}
               <span>
-                •{" "}
                 {new Date(videoData.createdAt).toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "short",
@@ -146,19 +201,21 @@ function WatchVideoPage() {
             <div className="flex gap-4">
               <button
                 onClick={toggleLike}
-                className={`flex items-center gap-2 px-3 py-1 rounded ${
-                  likedByUser ? "bg-red-600" : "bg-gray-800 hover:bg-gray-700"
-                }`}
+                className="flex items-center gap-2 px-3 py-1 rounded bg-transparent"
                 aria-label="Like video"
               >
-                <LuThumbsUp size={18} />
-                {likesCount}
+                <LuThumbsUp
+                  size={20}
+                  className={`transition-colors ${
+                    likedByUser ? "text-red-500" : "text-gray-400"
+                  }`}
+                />
+                <span>{likesCount}</span>
               </button>
 
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-3 py-1 bg-gray-800 hover:bg-gray-700 rounded"
-                aria-label="Share video"
+                className="flex items-center gap-2 px-3 py-1 rounded bg-gray-800 hover:bg-gray-700"
               >
                 <LuShare2 size={18} />
                 Share
@@ -166,49 +223,89 @@ function WatchVideoPage() {
             </div>
           </div>
 
-          {/* Description */}
-          <p className="bg-gray-900 p-4 rounded-md whitespace-pre-line mb-6">
-            {videoData.description}
-          </p>
+          {/* Description toggle */}
+          <div className="mb-4">
+            <button
+              onClick={() => setShowDescription((prev) => !prev)}
+              className="text-sm text-red-500 mb-2"
+            >
+              {showDescription ? "Hide Description": "Show Description"}
+            </button>
+            {showDescription && (
+              <p className="bg-gray-900 p-4 rounded whitespace-pre-line">
+                {videoData.description}
+              </p>
+            )}
+          </div>
 
-          {/* Comments */}
+          {/* Comments Section */}
           <div>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <LiaComments size={20} />
-              Comments
-            </h2>
-            {comments.length === 0 ? (
-              <p className="text-gray-400">No comments yet.</p>
-            ) : (
-              <ul className="space-y-4 max-h-96 overflow-y-auto">
-                {comments.map((comment) => (
-                  <li
-                    key={comment._id}
-                    className="bg-gray-900 p-3 rounded flex items-start gap-3"
-                  >
-                    <img
-                      src={comment.commentBy.avatar || "/default-avatar.png"}
-                      alt={comment.commentBy.username}
-                      onError={(e) => (e.target.src = "/default-avatar.png")}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-semibold">{comment.commentBy.username}</p>
-                      <p className="text-gray-300">{comment.text}</p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(comment.createdAt).toLocaleString()}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="flex items-center justify-evenly mb-2">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <LiaComments size={20} /> Comments
+              </h2>
+              <button
+                onClick={() => setShowComments((prev) => !prev)}
+                className="text-sm text-red-500"
+              >
+                {showComments ? "Hide": "Show" }
+              </button>
+            </div>
+
+            {showComments && (
+              <>
+                {/* New comment input */}
+                <CommentInput
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  onSubmit={postComment}
+                  disabled={postingComment}
+                  minLength={3}
+                  className="border-0 outline-0"
+
+                />
+
+                {/* Existing comments */}
+                {comments.length === 0 ? (
+                  <p className="text-gray-400">No comments yet.</p>
+                ) : (
+                  <ul className="space-y-4 max-h-96 overflow-y-auto p-2">
+                    {comments.map((comment) => (
+                      <li
+                        key={comment._id}
+                        className="bg-zinc-900 p-3 rounded flex items-start gap-3"
+                      >
+                        <img
+                          src={comment.commentBy.avatar || "/default-avatar.png"}
+                          alt={comment.commentBy.username}
+                          onError={(e) =>
+                            (e.target.src = "/default-avatar.png")
+                          }
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="font-semibold">
+                            {comment.commentBy.username}
+                          </p>
+                          <p className="text-white">{comment.text}</p>
+                          <p className="text-xs text-gray-300">
+                            {new Date(comment.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
           </div>
         </div>
 
         {/* Suggested Videos */}
         <aside className="w-full lg:w-96">
-          <h3 className="text-xl font-semibold mb-4 text-red-500">Suggested Videos</h3>
+          <h3 className="text-xl font-semibold mb-4 text-red-500">
+            Suggested Videos
+          </h3>
           {relatedVideos.length === 0 ? (
             <p className="text-gray-400">No suggestions available.</p>
           ) : (
@@ -218,7 +315,9 @@ function WatchVideoPage() {
                   key={vid._id}
                   onClick={() => navigate(`/videos/video/${vid._id}`)}
                   tabIndex={0}
-                  onKeyDown={(e) => e.key === "Enter" && navigate(`/videos/video/${vid._id}`)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && navigate(`/videos/video/${vid._id}`)
+                  }
                   className="cursor-pointer flex gap-3 focus:outline-none focus:ring-2 focus:ring-red-500"
                   role="button"
                 >
@@ -231,14 +330,14 @@ function WatchVideoPage() {
                     <h4 className="font-semibold text-white">{vid.title}</h4>
                     <div className="flex items-center gap-2 text-gray-400 text-sm">
                       <img
-                        src={vid.owner?.avatar}
+                        src={vid.owner?.avatar || "/default-avatar.png"}
                         alt={vid.owner?.username}
                         onError={(e) => (e.target.src = "/default-avatar.png")}
-                        className="w-5 h-5 rounded-full object-cover"
+                        className="w-8 h-8 rounded-full object-cover"
                       />
                       <span>{vid.owner?.username}</span>
                     </div>
-                    <p className="text-gray-400 text-sm">{vid.views} views</p>
+                    <p className="text-gray-200 text-sm">{vid.views} views</p>
                   </div>
                 </div>
               ))}
