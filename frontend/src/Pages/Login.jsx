@@ -53,21 +53,23 @@ function Login() {
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-zinc-900 p-8 rounded-lg border border-red-600 shadow-xl"
         data-aos="fade-up"
+        id="login-form"
+        aria-label="login form"
       >
-        <h2 className="text-3xl font-bold text-center text-red-500 mb-6">
+        <h2 className="text-3xl font-bold text-center text-red-500 mb-6" aria-label="login to loopy">
           Login to Loopy
         </h2>
 
         <div className="space-y-5">
           <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm mb-1">
+            <label htmlFor="Email" className="text-sm mb-1" aria-label="Email for login">
               Email
             </label>
           
               <input
               type="email"
               name="email"
-              placeholder="Enter your email"
+              placeholder="Enter your Email"
               className="bg-zinc-800 border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
               value={formData.email}
               onChange={handleChange}

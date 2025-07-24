@@ -21,6 +21,7 @@ import PageNotFound from "./Pages/PageNotFound";
 import UpdateProfilePage from "./Pages/UpdateProfilePage";
 import RoutePage from "./Pages/RoutePage";
 import Layout from "./Layout/Layout";
+import PublicRoute from "./components/PublicRoutes";
 
 
 function App() {
@@ -52,8 +53,8 @@ function App() {
         <Route element={<Layout/>}>
         <Route path="/" element={<RoutePage />} />
         <Route path="/users" index element={<HomePage/> } />
-        <Route path="/users/register" element={<Register/> } />
-        <Route path="/users/login" element={<Login />} />
+        <Route path="/users/register" element={<PublicRoute><Register/></PublicRoute> } />
+        <Route path="/users/login" element={<PublicRoute><Login/></PublicRoute>} />
         <Route path="/users/profile" element={<ProfilePage/>} />
         <Route path="/users/update-profile" element={<UpdateProfilePage/>} />
         <Route path="/users/logout" element={<LogoutPage/>} />
