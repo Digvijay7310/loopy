@@ -34,21 +34,7 @@ const userSchema = new Schema({
     coverImage: {
         type: String,
         required: true,
-    },
-    role: {
-        type: String,
-        required: true,
-        enum: ["user", "admin"],
-        default: "user"
-    },
-    isVerified: {
-        type: Boolean,
-        default: false,
-    },
-    watchHistory: [{
-        type: Schema.Types.ObjectId,
-        ref: "Video"
-    }]
+    }
 }, { timestamps: true })
 
 userSchema.pre("save", async function (next) {

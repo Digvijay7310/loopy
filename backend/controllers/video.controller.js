@@ -62,7 +62,7 @@ const getAllVideos = asyncHandler(async (req, res, next) => {
     if (!videos.length) {
       return next(new apiError(404, "There is no videos"));
     }
-    console.log("videos: ", videos.length);
+    // console.log("videos: ", videos.length);
     return res
       .status(200)
       .json(new apiResponse(200, videos, "Videos fetch successfully!"));
