@@ -30,14 +30,14 @@ function RoutePage() {
   }, []);
 
   return (
-    <div className="bg-zinc-800 text-gray-100">
+    <div className="bg-black text-gray-100">
       {/* Hero Section */}
       <section style={{
         backgroundImage: "url('/coverImage.jpg')",
-        opacity: "10px",
-        backgroundSize: "cover",
+        backgroundSize: "contain",
         backgroundPosition: "center"
-      }} className=" text-white py-20 px-6 md:px-16 opacity-90">
+      }} 
+      className=" text-white h-[50vh] md:h-[80vh] py-20 px-6 md:px-16 opacity-85 hover:opacity-100 duration-150">
         <div className="max-w-6xl mx-auto text-center" data-aos="fade-down">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Discover, Watch & Share Amazing Videos

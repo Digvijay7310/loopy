@@ -6,12 +6,16 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import LoginLoading from "../components/LoginLoading";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
 
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [seePassword, setSeePassword] = useState(false);
+
+  const {setUser} = useContext(AuthContext)
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -32,9 +36,12 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axiosInstance.post("/users/login", formData, {
+     const res =  await axiosInstance.post("/users/login", formData, {
         withCredentials: true,
       });
+
+      setUser(res.data.user)
+      console.log(res.data.user)
       toast.success("Logged in successfully!");
       navigate("/users/profile");
     } catch (error) {

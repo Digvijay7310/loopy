@@ -8,7 +8,7 @@ function PublicRoute ({ children }){
 
   // If tokens exist, redirect to home or dashboard (protected page)
   if (accessToken && refreshToken) {
-    return <Navigate to="/users" replace />;
+    return <Navigate to="/users/profile" replace />;
   }
 
   // Otherwise, allow access to public route (login/register)
