@@ -148,6 +148,9 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 
         console.log("user ", user)
 
+        user.views += 1;
+        await user.save()
+
         return res.status(200).json(new apiResponse(201, user, "User profile fetch"))
 
     } catch (error) {
@@ -157,7 +160,7 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 
 const updateUserProfile = asyncHandler(async (req, res, next) => {
   try {
-    const { fullName } = req.body;
+    const { fullName } = req.body?.fullName || "Nothinng";
     const avatarFile = req.files?.avatar?.[0];
     const coverImageFile = req.files?.coverImage?.[0];
 
