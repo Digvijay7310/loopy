@@ -1,183 +1,139 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../axios";
 import { toast } from "react-toastify";
+import axiosInstance from "../axios";
+import { Helmet } from "react-helmet";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function UpdateProfilePage() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    avatar: null,
-    coverImage: null,
-  });
-
-  const [initialProfile, setInitialProfile] = useState({});
+  const [fullName, setFullName] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [coverImagePreview, setCoverImagePreview] = useState(null);
+  const [coverPreview, setCoverPreview] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Helper: Preview generator
-  const createPreview = (file) => file && URL.createObjectURL(file);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axiosInstance.get("/users/profile", {
-          withCredentials: true,
-        });
-
-        const user = res.data.data;
-
-        setFormData((prev) => ({
-          ...prev,
-          fullName: user.fullName || "",
-        }));
-
-        setInitialProfile({
-          fullName: user.fullName,
-          avatar: user.avatar,
-          coverImage: user.coverImage,
-        });
-
-        setAvatarPreview(user.avatar);
-        setCoverImagePreview(user.coverImage);
-      } catch (err) {
-        toast.error("Failed to load profile");
-        console.error(err);
-      }
-    };
-    fetchProfile();
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (files && files.length > 0) {
-      const file = files[0];
-
-      // Optional: add file size/type validation
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error(`${name} must be less than 2MB`);
-        return;
-      }
-
-      setFormData((prev) => ({ ...prev, [name]: file }));
-
-      if (name === "avatar") setAvatarPreview(createPreview(file));
-      if (name === "coverImage") setCoverImagePreview(createPreview(file));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+  // Get current user profile to prefill
+  const fetchProfile = async () => {
+    try {
+      const res = await axiosInstance.get("/users/profile", { withCredentials: true });
+      const data = res.data.data;
+      setFullName(data.fullName);
+      setAvatarPreview(data.avatar);
+      setCoverPreview(data.coverImage);
+    } catch (err) {
+      toast.error("Failed to load profile info");
     }
   };
 
-  const isFormUnchanged =
-    formData.fullName === initialProfile.fullName &&
-    formData.avatar === null &&
-    formData.coverImage === null;
+  useEffect(() => {
+    fetchProfile();
+    AOS.init({ duration: 700, once: true });
+  }, []);
 
-  const handleSubmit = async (e) => {
+  // Handle form submit
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    if (isFormUnchanged) {
-      toast.info("No changes to update.");
-      return;
-    }
-
     setLoading(true);
-
     try {
-      const updateForm = new FormData();
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      if (avatarFile) formData.append("avatar", avatarFile);
+      if (coverFile) formData.append("coverImage", coverFile);
 
-      if (formData.fullName && formData.fullName !== initialProfile.fullName) {
-        updateForm.append("fullName", formData.fullName);
-      }
-      if (formData.avatar) updateForm.append("avatar", formData.avatar);
-      if (formData.coverImage) updateForm.append("coverImage", formData.coverImage);
-
-      const res = await axiosInstance.put("/users/update-profile", updateForm, {
+      const res = await axiosInstance.put("/users/update-profile", formData, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success(res.data.message || "Profile updated successfully!");
+      toast.success("Profile updated successfully!");
+      fetchProfile(); // refresh data
     } catch (err) {
-      console.error("Update error:", err);
-      const msg = err?.response?.data?.message || "Internal Server Error. Try again.";
-      toast.error(msg);
+      toast.error(err.response?.data?.message || "Update failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center py-10 px-4">
-      <h1 className="text-3xl font-bold text-red-500 mb-6">Update Profile</h1>
+    <div className="min-h-screen bg-black text-white px-4 py-10">
+      <Helmet>
+        <title>Update Profile | Loopy</title>
+        <meta name="description" content="Update your profile details including avatar and cover image" />
+      </Helmet>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-zinc-900 border border-red-600 shadow-xl rounded-lg p-6 w-full max-w-xl space-y-6"
-        encType="multipart/form-data"
-      >
-        {/* Full Name */}
-        <div>
-          <label htmlFor="fullName" className="block mb-1 text-gray-300">Full Name</label>
-          <input
-            id="fullName"
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            placeholder="Enter your name"
-            className="w-full bg-zinc-800 border border-gray-700 rounded px-4 py-2"
-          />
-        </div>
+      <div className="max-w-3xl mx-auto bg-gray-900 p-6 rounded-lg shadow-xl" data-aos="fade-up">
+        <h2 className="text-2xl font-bold mb-6 text-center">Update Your Profile</h2>
 
-        {/* Avatar Upload */}
-        <div>
-          <label htmlFor="avatar" className="block mb-1 text-gray-300">Avatar</label>
-          <input
-            id="avatar"
-            type="file"
-            name="avatar"
-            accept="image/*"
-            onChange={handleChange}
-            className="w-full text-white"
-          />
-          {avatarPreview && (
-            <img
-              src={avatarPreview}
-              alt="Avatar Preview"
-              className="w-20 h-20 rounded-full mt-2 object-cover"
+        <form onSubmit={handleUpdate} className="space-y-6">
+          {/* Full Name */}
+          <div>
+            <label className="block text-gray-300 mb-1">Full Name</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+              placeholder="Enter full name"
             />
-          )}
-        </div>
+          </div>
 
-        {/* Cover Image Upload */}
-        <div>
-          <label htmlFor="coverImage" className="block mb-1 text-gray-300">Cover Image</label>
-          <input
-            id="coverImage"
-            type="file"
-            name="coverImage"
-            accept="image/*"
-            onChange={handleChange}
-            className="w-full text-white"
-          />
-          {coverImagePreview && (
-            <img
-              src={coverImagePreview}
-              alt="Cover Preview"
-              className="w-full h-40 mt-2 object-cover rounded"
+          {/* Avatar Upload */}
+          <div>
+            <label className="block text-gray-300 mb-1">Avatar (Profile Picture)</label>
+            {avatarPreview && (
+              <img
+                src={avatarPreview}
+                alt="Current Avatar"
+                className="h-20 w-20 rounded-full mb-2 object-cover border"
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setAvatarFile(file);
+                setAvatarPreview(URL.createObjectURL(file));
+              }}
+              className="text-sm text-gray-300"
             />
-          )}
-        </div>
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading || isFormUnchanged}
-          className="w-full py-2 bg-red-600 hover:bg-red-700 transition rounded font-semibold disabled:opacity-50"
-        >
-          {loading ? "Updating..." : "Update Profile"}
-        </button>
-      </form>
+          {/* Cover Image Upload */}
+          <div>
+            <label className="block text-gray-300 mb-1">Cover Image</label>
+            {coverPreview && (
+              <img
+                src={coverPreview}
+                alt="Current Cover"
+                className="h-32 w-full object-cover rounded mb-2"
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setCoverFile(file);
+                setCoverPreview(URL.createObjectURL(file));
+              }}
+              className="text-sm text-gray-300"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded transition"
+              disabled={loading}
+            >
+              {loading ? "Updating..." : "Update Profile"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

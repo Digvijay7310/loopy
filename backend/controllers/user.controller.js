@@ -160,7 +160,7 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 
 const updateUserProfile = asyncHandler(async (req, res, next) => {
   try {
-    const { fullName } = req.body?.fullName || "Nothinng";
+    const { fullName } = req.body;
     const avatarFile = req.files?.avatar?.[0];
     const coverImageFile = req.files?.coverImage?.[0];
 

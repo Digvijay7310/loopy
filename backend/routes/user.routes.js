@@ -28,7 +28,11 @@ router.route("/refresh-token").post(refreshToken)
 
 router.route("/login").post(loginUser)
 router.route("/profile").get(verifyJwt, getUserProfile)
-router.route("/update-profile").put(verifyJwt, updateUserProfile)
+router.route("/update-profile").put(verifyJwt, 
+     upload.fields([
+    { name: "avatar", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ]), updateUserProfile)
 router.route("/logout").post(verifyJwt, logoutUser)
 
 

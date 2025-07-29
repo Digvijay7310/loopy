@@ -15,7 +15,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [seePassword, setSeePassword] = useState(false);
 
-  const {setUser} = useContext(AuthContext)
+  // const {setUser} = useContext(AuthContext)
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -39,9 +39,7 @@ function Login() {
      const res =  await axiosInstance.post("/users/login", formData, {
         withCredentials: true,
       });
-
-      setUser(res.data.user)
-      console.log(res.data.user)
+      
       toast.success("Logged in successfully!");
       navigate("/users/profile");
     } catch (error) {
@@ -58,7 +56,7 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-black px-4 py-12 text-white">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md bg-zinc-900 p-8 rounded-lg border border-red-600 shadow-xl"
+        className="w-full max-w-md bg-zinc-950 p-8 rounded-lg border border-red-600 shadow-2xl shadow-gray-700"
         data-aos="fade-up"
         id="login-form"
         aria-label="login form"
@@ -77,7 +75,7 @@ function Login() {
               type="email"
               name="email"
               placeholder="Enter your Email"
-              className="bg-zinc-800 border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="bg-zinc-800 border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
               value={formData.email}
               onChange={handleChange}
               required
@@ -94,7 +92,7 @@ function Login() {
               type={seePassword ? "text" : "password"}               
               name="password"
               placeholder="Enter your password"
-              className="bg-zinc-800 relative border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="bg-zinc-800 relative border border-gray-700 text-white p-2 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
               value={formData.password}
               onChange={handleChange}
               required
@@ -108,7 +106,7 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors duration-300 font-semibold py-2 rounded"
+            className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors duration-300 font-semibold py-2 rounded hover:cursor-pointer duration-150"
           >
             {loading ? <LoginLoading/> : "Login"}
           </button>

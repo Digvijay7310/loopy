@@ -84,7 +84,7 @@ function Navbar() {
   return (
     <>
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 flex justify-between md:justify-evenly items-center md:h-[80px] bg-black text-white px-4 py-2 shadow-md">
+      <header className="fixed top-0 left-0 w-full z-50 flex justify-between md:justify-evenly items-center md:h-[80px] bg-black text-white px-4 py-2  mb-4">
         {/* Logo */}
         <Link
         to="/"

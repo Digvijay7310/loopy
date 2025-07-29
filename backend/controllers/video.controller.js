@@ -73,9 +73,9 @@ const getAllVideos = asyncHandler(async (req, res, next) => {
 
 const myVideos = asyncHandler(async (req, res, next) => {
   try {
-    const videos = await Video.find({ owner: req.user }).populate(
+    const videos = await Video.find({ owner: req.user._id }).populate(
       "owner",
-      "username"
+      "username avatar",
     );
 
     if (!videos.length) {
