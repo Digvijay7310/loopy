@@ -3,6 +3,7 @@ import VideoCard from "../components/VideoCard";
 import axiosInstance from "../axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Helmet } from "react-helmet";
 
 const HomePage = () => {
   const [videos, setVideos] = useState([]);
@@ -30,14 +31,22 @@ const HomePage = () => {
   }, []);
 
   return (
-    <main className="min-h-screen bg-zinc-800 text-gray-100 py-10 px-4 sm:px-6 lg:px-12">
+    <main className="min-h-screen bg-black text-gray-100 py-10 px-4 sm:px-6 lg:px-12">
+<Helmet>
+      <title>Home - Loopy</title>
+      <meta
+        name="description"
+        content="Watch the latest and trending videos on YourSiteName. Explore diverse content and enjoy unlimited streaming."
+      />
+    </Helmet>
+
       {loading ? (
         <div
           role="status"
           aria-live="polite"
           className="flex justify-center items-center min-h-[30vh]"
         >
-          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500" />
+          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-red-500" />
           <span className="sr-only">Loading videos...</span>
         </div>
       ) : error ? (

@@ -187,7 +187,7 @@ function Navbar() {
             <form
               onSubmit={handleOnSubmit}
               id="search-bar"
-              className=" fixed top-[60px] flex bg-zinc-800 ring-1 ring-zinc-200 fo rounded-4xl h-[40px] w-[300px]">
+              className=" fixed top-[70px] flex bg-black ring-1 ring-red-500 px-5 rounded-4xl h-[50px] w-[300px]">
 
               <input
                 onChange={(e) => setSubmit(e.target.value)}

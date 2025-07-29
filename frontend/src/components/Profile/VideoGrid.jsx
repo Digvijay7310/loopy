@@ -20,7 +20,7 @@ function VideoGrid({ videos }) {
               alt={video.title}
             />
             <video
-              className="h-full w-full object-cover rounded-lg hidden group-hover:block"
+              className="h-[200px] w-[300px] object-cover rounded-lg hidden group-hover:block"
               src={video.videoUrl}
               autoPlay
               loop
